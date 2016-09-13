@@ -1,0 +1,45 @@
+<?php
+/**
+ * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
+ * MDDDDDDDDDDDDDNNDDDDDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDMM
+ * MDDDDDDDDDDDD===8NDDDDDDDDDDDDDDD=.NDDDDDDDDDDDDDDDDDDDDDDMM
+ * DDDDDDDDDN===+N====NDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDDM
+ * DDDDDDD$DN=8DDDDDD=~~~DDDDDDDDDND=.NDDDDDNDNDDDDDDDDDDDDDDDM
+ * DDDDDDD+===NDDDDDDDDN~~N........8$........D ........DDDDDDDM
+ * DDDDDDD+=D+===NDDDDDN~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDN
+ * DDDDDDD++DDDN===DDDDD~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDD
+ * DDDDDDD++DDDDD==DDDDN~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDN
+ * DDDDDDD++DDDDD==DDDDD~~N.... ...8$........D ........DDDDDDDM
+ * DDDDDDD$===8DD==DD~~~~DDDDDDDDN.IDDDDDDDDDDDNDDDDDDNDDDDDDDM
+ * NDDDDDDDDD===D====~NDDDDDD?DNNN.IDNODDDDDDDDN?DNNDDDDDDDDDDM
+ * MDDDDDDDDDDDDD==8DDDDDDDDDDDDDN.IDDDNDDDDDDDDNDDNDDDDDDDDDMM
+ * MDDDDDDDDDDDDDDDDDDDDDDDDDDDDDN.IDDDDDDDDDDDDDDDDDDDDDDDDDMM
+ * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
+ *
+ * @author José Castañeda <jose@qbo.tech>
+ * @category qbo
+ * @package qbo\PayPalPlusMx\
+ * @copyright   qbo (http://www.qbo.tech)
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * 
+ * © 2016 QBO DIGITAL SOLUTIONS. 
+ *
+ */
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$rootTemplate = $objectManager->create('qbo\PayPalPlusMx\Block\View\Root');
+?>
+<!doctype html>
+<html <?php /* @escapeNotVerified */ echo $htmlAttributes ?>>
+    <head <?php /* @escapeNotVerified */ echo $headAttributes ?>>
+        <?php if($rootTemplate->canIncludePayPalScript()) : ?>
+            <script type="text/javascript" src="<?php echo $rootTemplate->getScriptSource() ?>"></script>
+        <?php endif; ?>
+        <?php /* @escapeNotVerified */ echo $requireJs ?>
+        <?php /* @escapeNotVerified */ echo $headContent ?>
+        <?php /* @escapeNotVerified */ echo $headAdditional ?>
+    </head>
+    <body data-container="body" data-mage-init='{"loaderAjax": {}, "loader": { "icon": "<?php /* @escapeNotVerified */ echo $loaderIcon; ?>"}}' <?php /* @escapeNotVerified */ echo $bodyAttributes ?>>
+        <?php /* @escapeNotVerified */ echo $layoutContent ?>
+    </body>
+</html>

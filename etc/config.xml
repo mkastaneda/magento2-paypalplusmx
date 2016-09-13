@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+/**
+* qbo_PayPalPlusMx default configuration
+*
+* @category    qbo
+* @package     qbo_PayPalPlusMx
+* @copyright   qbo (http://www.qbo.tech)
+* @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+*/
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <qbo_paypalplusmx>
+                <active>0</active>
+                <model>qbo\PayPalPlusMx\Model\Payment</model>
+                <payment_action>authorize_capture</payment_action>
+                <title>Tarjeta de crédito/débito</title>
+                <sandbox>1</sandbox>
+                <status_pending>1</status_pending>
+                <save_cards_token>1</save_cards_token>
+                <installments_active>0</installments_active>
+                <installments_months>1</installments_months>
+                <iframe_height>600</iframe_height>
+                <iframe_language>es_MX</iframe_language>
+                <client_id backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <client_secret backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <allowspecific>0</allowspecific>
+                <min_order_total>0.50</min_order_total>
+                <profile_experience_id/>
+            </qbo_paypalplusmx>
+        </payment>
+    </default>
+</config>
