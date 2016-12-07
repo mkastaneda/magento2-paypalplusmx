@@ -43,3 +43,5 @@
 "Displayed on Sucess Page when Pending Payment status is present","Mensaje de advertencia en Success Page si el pedido tiene status Penging Payment"
 "The selected value will be used to pre-select a month plan to the user at checkout","El valor seleccionado, será seleccionado por defecto en el formulario de Meses Sin Intereses"
 "We're sorry, your payment has been already processed.","Su pago ya ha sido procesado pero se ha producido un error al guardar su pedido. Por favor contáctenos para procesar su pedido y evitar pagos duplicados. Si quiere realizar otra compra con otro metodo de pago, intente eliminar sus cookies y comience de nuevo su proceso de compra."
+"Verify your shipping address.","Por favor espcifique o valide su dirección de pago."
+"Please specify an e-mail address and try again","Por favor especifique una dirección de e-mail e inténtelo de nuevo."

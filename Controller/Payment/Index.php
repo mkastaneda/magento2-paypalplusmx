@@ -109,7 +109,11 @@ class Index extends \Magento\Framework\App\Action\Action
         parent::__construct($context);
     }
     /**
-     * Get dynamic Payment data
+     * This is the ajax call that gets called when user arrives to the checkout
+     * 
+     * Get and validate Payment data and send it to PayPal API.
+     * If we get no errors, return data to window.checkoutconfig so 
+     * it can be accessed by the method-renderer.js
      * 
      * {@inheritdoc}
      */
@@ -117,11 +121,17 @@ class Index extends \Magento\Framework\App\Action\Action
     {
         $resultJson = $this->_resultJsonFactory->create();
         $config = array();
-        if ($this->getRequest()->isXmlHttpRequest()) {   
-            if(!is_array($this->_quote->getShippingAddress()->validate()))
+        if ($this->getRequest()->isXmlHttpRequest()) { 
+            /**
+             * Validate that shipping address exists.
+             * If the address is invalid (or does not exist yet) but all products in quote are virtual, proceed.
+             * Let the user specify the address on the payment method form
+             */
+            if(!is_array($this->_quote->getShippingAddress()->validate() || $this->getIsVirtualOrder()))
             {
                 $this->_api->setProfileId($this->getStoreConfig(self::XML_PATH_EXPERIENCE_ID));
                 $payment = $this->_api->initPayment();
+                
                 if(!$payment['success']){
                     return $resultJson->setHttpResponseCode(400)
                                       ->setData(array('error' => true, 'reason' => $payment['reason'])); 
@@ -130,12 +140,13 @@ class Index extends \Magento\Framework\App\Action\Action
                         $config['isQuoteReady'] = false;
                         $config['reason'] = $this->__('Iframe not ready');
                 } else{
+                    $config['shippingData']  = $this->_quote->getShippingAddress()->toArray();                        
+                    $config['billingData']   = $this->_quote->getBillingAddress()->toArray();                        
                     $config['isQuoteReady'] = true;
                     $config['actionUrl']    = $this->_api->getIframeUrl();
                     $config['executeUrl']   = $this->_api->getExecuteUrl();
                     $config['accessToken']  = $this->_api->getAccessToken();
                     $config['paymentId']    = $this->_api->getPaymentId();
-                    $config['shippingData'] = $this->_quote->getShippingAddress()->toArray();
                     $config['card_token']   = $this->getLoggedInCustomerToken() ? : null;
                     $config['error']        = false;
                 }
@@ -181,5 +192,23 @@ class Index extends \Magento\Framework\App\Action\Action
             return $customer->getCardTokenId();
         } 
         return false;
+    }
+    /**
+     * If order contains one non-virtual product, is not a virtual order.
+     * Magento wont show the shipping address if there are only virtual products in cart
+     * 
+     * @return boolean
+     */
+    public function getIsVirtualOrder()
+    {
+        $isVirtual = true;
+        
+        foreach($this->_quote->getAllVisibleItems() as $_item) {
+            if(!$_item->getProduct()->isVirtual()){
+                $isVirtual = false;
+                break 1;
+            }
+        }
+        return $isVirtual;
     }
 }

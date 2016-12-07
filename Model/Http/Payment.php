@@ -69,6 +69,11 @@ class Payment {
      * @var type 
      */
     protected $_customerAddress = null;
+    /**
+     *
+     * @var type 
+     */
+    protected $_customerBillingAddress = null;
 
     /**
      * Locale Resolver
@@ -91,9 +96,15 @@ class Payment {
      * @var Magento\Quote\Api\ShippingMethodManagementInterface 
      */
     protected $_shippingMethodManager;
-    
+    /**
+     *
+     * @var type 
+     */
     protected $_logger;
-    
+    /**
+     *
+     * @var type 
+     */
     protected $_cartFactory;
     /**
      *
@@ -136,6 +147,7 @@ class Payment {
         $this->_cartFactory = $cartFactory;
         $this->_cartPayment = $this->_cartFactory->create($this->_quote);
         $this->_customerAddress = $cart->getQuote()->getShippingAddress();
+        $this->_customerBillingAddress = $cart->getQuote()->getBillingAddress();
         $this->_addressHelper = $addressHelper;
         $this->localeResolver = $localeResolver;
         $this->shippingMethodManager = $shippingMethodManager;
@@ -222,22 +234,26 @@ class Payment {
             'items' => $this->_getLineItems($this->_quote),
         );
         /**
-         * If any virtual item is present, do not send shipping address on payment request, 
-         * because Magento checkout will not display shipping step. 
-         * If no shipping step, no address will be available. Therefore we cant include shipping address.
+         * If all order items are virtual, Magento checkout will not display shipping step. 
+         * If no shipping step, use payment method's billing address.
          */
-        foreach($this->_quote->getAllVisibleItems() as $_item){
+        foreach($this->_quote->getAllVisibleItems() as $_item) {
             if(!$_item->getProduct()->isVirtual()){
                 $includeAddress = true;
+                break 1;
             }
         }
-        //If a default customer address exists, inclide address.
-        if($this->_customerAddress){
+        //If a default customer address exists, include address even if only virtual products on cart.
+        if(!is_array($this-> _customerAddress->validate())){
             $includeAddress = true;
         }
         if($includeAddress){
             $result['shipping_address'] = $this->_getShippingAddress($this->_quote);  
+        }else{
+            //Use billing address in case no shipping address is required by Magento
+            $result['shipping_address'] = $this->_getBillingAddress($this->_quote);
         }
+        
         return $result;
     }
     /**
@@ -304,7 +320,7 @@ class Payment {
     protected function _getShippingAddress()
     {
         $region = $this->_customerAddress->getRegionCode() ?  $this->_customerAddress->getRegionCode() :  $this->_customerAddress->getRegion();
-        $address = $this->_prepareAddressLines();
+        $address = $this->_prepareAddressLines($this->_customerAddress);
 
         $request = array(
             'recipient_name' => $this->_customerAddress->getFirstname() . " " .$this->_customerAddress->getLastname(),
@@ -320,17 +336,42 @@ class Payment {
         return $request;
     }
     /**
+     * Get shipping address request data
+     *
+     * @param \Magento\Framework\DataObject $address
+     * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function _getBillingAddress()
+    {
+        $region = $this->_customerBillingAddress->getRegionCode() ?  $this->_customerBillingAddress->getRegionCode() :  $this->_customerBillingAddress->getRegion();
+        $address = $this->_prepareAddressLines($this->_customerBillingAddress);
+
+        $request = array(
+            'recipient_name' => $this->_customerBillingAddress->getFirstname() . " " .$this->_customerBillingAddress->getLastname(),
+            'city' => $this->_customerBillingAddress->getCity(),
+            'state' => $region ? : 'n/a',
+            'postal_code' => $this->_customerBillingAddress->getPostcode(),
+            'country_code' => $this->_customerBillingAddress->getCountryId(),
+            'line1' => $address['line1'],
+            'line2' => $address['line2'],
+            'phone' => $this->_customerBillingAddress->getTelephone(),
+        );
+        
+        return $request;
+    }
+    /**
      * Convert streets to tow lines format
      * 
      * @return array $address
      */
-    protected function _prepareAddressLines()
+    protected function _prepareAddressLines($address)
     {
-        $street = $this->_addressHelper->convertStreetLines($this->_customerAddress->getStreet(), 2);
-        $address['line1'] = isset($street[0]) ? $street[0] : '';
-        $address['line2'] = isset($street[1]) ? $street[1] : '';
+        $street = $this->_addressHelper->convertStreetLines($address->getStreet(), 2);
+        $_address['line1'] = isset($street[0]) ? $street[0] : '';
+        $_address['line2'] = isset($street[1]) ? $street[1] : '';
         
-        return $address;
+        return $_address;
     }
     /**
      * Format price string

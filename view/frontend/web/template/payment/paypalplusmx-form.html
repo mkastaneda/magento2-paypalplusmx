@@ -20,6 +20,9 @@
     <div id="iframe-error" data-bind="visible: false" class="message notice">
         <div><!-- ko i18n: "We cannot process PayPal Payments at this time. Please try again later" --><!-- /ko --></div>
     </div>
+    <div id="iframe-error-email" data-bind="visible: false" class="message notice">
+        <div><!-- ko i18n: "Please specify an e-mail address and try again" --><!-- /ko --></div>
+    </div>
     <div class="payment-method-content">
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->

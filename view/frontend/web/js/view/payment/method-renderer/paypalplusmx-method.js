@@ -93,11 +93,27 @@ define(
                  * @returns {undefined}
                  */
                 initializeIframe: function () {
+                    //Hide previous error messages
+                    $('#iframe-warning').hide();
+                    $('#iframe-error-email').hide();
+                    
                     //Build Iframe
                     var self = this;
                     var mode = window.checkoutConfig.payment.paypalPlusIframe.config.isSandbox === "1" ? 'sandbox' : 'live';
                     var installmentsActive = window.checkoutConfig.quoteData.base_grand_total > self.minimumInstallmentAmount && Boolean(parseInt(window.checkoutConfig.payment.paypalPlusIframe.config.installments)) ? true : false;
                     var email = quote.guestEmail ? quote.guestEmail : window.checkoutConfig.customerData.email;
+                    
+                    if(!email && !$("#customer-email").val()) {
+                        //This will happen if no shipping address is required and user adds a payment address before entering an email address
+                        $('#iframe-warning').hide();
+                        $('#iframe-error-email').show();
+                        $('#continueButton').prop("disabled", true);
+                        //Wait for the user to specify an email address.
+                        $("#customer-email").on('focusout', function(){
+                            self.initializeIframe();
+                        });
+                        return false;
+                    }
                     /**
                      * Object script included in <head> 
                      * @see di.xml
@@ -118,10 +134,10 @@ define(
                                 "disallowRememberedCards": window.checkoutConfig.customerData.id && window.checkoutConfig.payment.paypalPlusIframe.config.save_cards_token ? false : true,
                                 "rememberedCards": window.checkoutConfig.payment.paypalPlusIframe.api.card_token  ? window.checkoutConfig.payment.paypalPlusIframe.api.card_token : "1",
                                 "useraction": "continue",
-                                "payerEmail": email,
-                                "payerPhone": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone,
-                                "payerFirstName": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.firstname,
-                                "payerLastName": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.lastname,
+                                "payerEmail": email ? email : $("#customer-email").val(),
+                                "payerPhone": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone ? window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone : window.checkoutConfig.payment.paypalPlusIframe.api.billingData.telephone,
+                                "payerFirstName": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.firstname ? window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.firstname : window.checkoutConfig.payment.paypalPlusIframe.api.billingData.firstname,
+                                "payerLastName": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.lastname ? window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.lastname : window.checkoutConfig.payment.paypalPlusIframe.api.billingData.telephone,
                                 "payerTaxId": "",
                                 "payerTaxIdType": "",
                                 "merchantInstallmentSelection": installmentsActive ? parseInt(window.checkoutConfig.payment.paypalPlusIframe.config.installments_months) : 1,
@@ -262,7 +278,7 @@ define(
                             'access_token': this.accessToken,
                             'payer_id': this.payerId,
                             'payment_id': this.paymentId,
-                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl,
+                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
                             'terms': this.term ? this.term : false
                         }

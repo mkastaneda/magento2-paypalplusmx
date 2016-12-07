@@ -382,7 +382,9 @@ class Api
             }
             $this->_paymentId = $this->paymentObject['id'];
             $this->_checkoutSession->setPaymentId($this->_paymentId);
-        }        
+        } else{
+            throw new \Exception(__('Verify your shipping address.'));
+        }       
     }
     /**
      * Look Up an existing payment
