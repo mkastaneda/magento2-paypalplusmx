@@ -29,6 +29,7 @@ namespace qbo\PayPalPlusMx\Block\Checkout;
 
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
+    const SCOPE_STORE = 'store';
     const XML_PATH_PENDING_PAYMENT_MESSAGE = 'payment/qbo_paypalplusmx/pending_payment_message';
     const XML_PATH_IS_METHOD_ACTIVE        = 'payment/qbo_paypalplusmx/active';
     const PAYPAL_LOGO                      = 'https://www.paypalobjects.com/webstatic/mktg/logo-center/logotipo_paypal_pagos_seguros.png';
@@ -61,9 +62,9 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Model\Order\Config $orderConfig,
         \Magento\Framework\App\Http\Context $httpContext,
-        array $data = [],
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Sales\Model\OrderFactory $orderFactory
+        \Magento\Sales\Model\OrderFactory $orderFactory,
+        array $data = []
     )
     {
         parent::__construct($context, $checkoutSession, $orderConfig, $httpContext, $data);
@@ -138,7 +139,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
     {
         $value =  $this->_scopeConfig->getValue(
             $configPath,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            self::SCOPE_STORE
         ); 
         return $value;
     }
