@@ -50,14 +50,13 @@ class Cards extends \Magento\Framework\App\Action\Action
             \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
             \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
             \Magento\Framework\Json\Helper\Data $helper,
-            \Magento\Framework\ObjectManagerInterface $objectManager,
             \Psr\Log\LoggerInterface $logger
 
     ){
         $this->_resultJsonFactory = $resultJsonFactory;        
         $this->_resultRawFactory = $resultRawFactory;        
         $this->_helper = $helper;     
-        $this->_objectManager = $objectManager;
+        $this->_objectManager = $context->getObjectManager();
         $this->_logger = $logger;
         parent::__construct($context);
     }

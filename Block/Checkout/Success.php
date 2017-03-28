@@ -62,13 +62,12 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
         \Magento\Checkout\Model\Session $checkoutSession,
         \Magento\Sales\Model\Order\Config $orderConfig,
         \Magento\Framework\App\Http\Context $httpContext,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Sales\Model\OrderFactory $orderFactory,
         array $data = []
     )
     {
         parent::__construct($context, $checkoutSession, $orderConfig, $httpContext, $data);
-        $this->_scopeconfig = $scopeConfig;
+        $this->_scopeconfig = $context->getScopeConfig();
         $this->_orderFactory = $orderFactory;
     }
     /**

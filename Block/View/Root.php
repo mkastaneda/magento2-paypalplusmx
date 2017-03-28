@@ -59,11 +59,10 @@ class Root {
      * @param ScopeConfigInterface $scopeConfig
      */
     public function __construct(
-         View\Element\Template\Context $context,
-         ScopeConfigInterface $scopeConfig
+         View\Element\Template\Context $context
     ){
         $this->_request = $context->getRequest();
-        $this->_scopeConfig = $scopeConfig;
+        $this->_scopeConfig = $context->getScopeConfig();
     }
     /**
      * Match current request to checkout/index/index and check if Payment method is active

@@ -94,7 +94,6 @@ class Index extends \Magento\Framework\App\Action\Action
         Api $api, 
         \Magento\Checkout\Model\Cart $cart,
         \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\ObjectManagerInterface $objectManager,
         \Magento\Framework\Locale\ResolverInterface $localeResolver,
         \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
     ) {
@@ -102,7 +101,7 @@ class Index extends \Magento\Framework\App\Action\Action
         $this->_api = $api;
         $this->_quote = $cart->getQuote();
         $this->_logger = $logger;
-        $this->_objectManager = $objectManager;
+        $this->_objectManager = $context->getObjectManager();
         $this->_localeResolver = $localeResolver;
         $this->_resultJsonFactory = $resultJsonFactory;  
         

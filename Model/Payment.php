@@ -101,8 +101,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         \Magento\Framework\Mail\Template\TransportBuilder $transportBuilder,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         PaymentObject $paymentObject,
-        Api $api,
-        \Psr\Log\LoggerInterface $logger
+        Api $api
     ) {
         parent::__construct(
             $context,
@@ -119,7 +118,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $this->_emailTransport = $transportBuilder;
         $this->_scopeConfig = $scopeConfig;
         $this->_storeManager = $storeManager;
-        $this->_logger = $logger;
+        $this->_logger = $context->getLogger();
 
     }
     /**
