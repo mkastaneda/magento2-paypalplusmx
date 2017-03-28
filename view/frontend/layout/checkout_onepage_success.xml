@@ -1,39 +1,23 @@
 <?xml version="1.0"?>
-<!--
-/**
- * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
- * MDDDDDDDDDDDDDNNDDDDDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDMM
- * MDDDDDDDDDDDD===8NDDDDDDDDDDDDDDD=.NDDDDDDDDDDDDDDDDDDDDDDMM
- * DDDDDDDDDN===+N====NDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDDM
- * DDDDDDD$DN=8DDDDDD=~~~DDDDDDDDDND=.NDDDDDNDNDDDDDDDDDDDDDDDM
- * DDDDDDD+===NDDDDDDDDN~~N........8$........D ........DDDDDDDM
- * DDDDDDD+=D+===NDDDDDN~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDN
- * DDDDDDD++DDDN===DDDDD~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDD
- * DDDDDDD++DDDDD==DDDDN~~N.?DDDDDDDDDDDDDD:.D .DDDDD .DDDDDDDN
- * DDDDDDD++DDDDD==DDDDD~~N.... ...8$........D ........DDDDDDDM
- * DDDDDDD$===8DD==DD~~~~DDDDDDDDN.IDDDDDDDDDDDNDDDDDDNDDDDDDDM
- * NDDDDDDDDD===D====~NDDDDDD?DNNN.IDNODDDDDDDDN?DNNDDDDDDDDDDM
- * MDDDDDDDDDDDDD==8DDDDDDDDDDDDDN.IDDDNDDDDDDDDNDDNDDDDDDDDDMM
- * MDDDDDDDDDDDDDDDDDDDDDDDDDDDDDN.IDDDDDDDDDDDDDDDDDDDDDDDDDMM
- * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
- *
- * @author José Castañeda <jose@qbo.tech>
- * @category qbo
- * @package qbo\PayPalPlusMx\
- * @copyright   qbo (http://www.qbo.tech)
- * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
- * © 2016 QBO DIGITAL SOLUTIONS. 
- *
- */
--->
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<!--<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceBlock name="checkout.success" remove="true"/>        
+       <referenceBlock name="checkout.success" remove="true"/>        
         <referenceContainer name="content">          
             <block class="qbo\PayPalPlusMx\Block\Checkout\Success" name="checkout.ppplus.success" template="checkout/success.phtml" cacheable="false" />
             <block class="Magento\Checkout\Block\Registration" name="checkout.registration" template="registration.phtml" cacheable="false"/>
         </referenceContainer>
         <container name="order.success.additional.info" label="Order Success Additional Info"/>
+        <referenceContainer name="order.success.additional.info" label="Order Success Additional Info">
+            <block class="qbo\PayPalPlusMx\Block\Checkout\Success" name="ppplus.success.additional" template="checkout/success.phtml" cacheable="false" />
+        </referenceContainer>
+    </body>
+</page>-->
+
+<!-- Use the above configuration o fix Magento bug duplicating additional info block below footer -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="order.success.additional.info" label="Order Success Additional Info">
+            <block class="qbo\PayPalPlusMx\Block\Checkout\Success" name="pplus.success.additional" template="qbo_PayPalPlusMx::checkout/success.phtml" cacheable="false" />
+        </referenceContainer>
     </body>
 </page>

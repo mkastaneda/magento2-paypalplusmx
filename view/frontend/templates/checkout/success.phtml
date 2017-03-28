@@ -29,34 +29,19 @@
 ?>
 
 <?php /** @var $block qbo\PayPalPlusMx\Block\Checkout\Success */ ?>
-<div class="checkout-success">
-    <?php if ($block->getOrderId()):?>
-        <?php if ($block->getCanViewOrder()) :?>
-            <p><?php echo __('Your order number is: %1.', sprintf('<a href="%s" class="order-number"><strong>%s</strong></a>', $block->escapeHtml($block->getViewOrderUrl()), $block->escapeHtml($block->getOrderId()))) ?></p>
-        <?php  else :?>
-            <p><?php echo __('Your order # is: <span>%1</span>.', $block->escapeHtml($block->getOrderId())) ?></p>
-        <?php endif;?>
-            <p><?php /* @escapeNotVerified */ echo __('We\'ll email you an order confirmation with details and tracking info.') ?></p>
-    <?php endif;?>
-            
-    <!-- Custom PPPlus additional info -->
-    <?php if($block->getIsMethodActive()) : ?>
-        <!-- Add Custom PayPal Message for pending payments -->
-        <?php if ($block->isPaymentPending() && !empty($block->getPendingMessage())) : ?>
-            <div id="warning" class="message notice">
-                <div><?php echo $block->escapeHtml($block->getPendingMessage()) ?></div>
-            </div>
-        <?php endif; ?>
-        <!-- Add PayPal Logo -->
-        <img src="<?php echo $block->escapeHtml($block->getPayPalLogo()) ?>" border="0" />
-    <?php endif; ?>
-    <!-- End of Custom PPPlus additional info --> 
-    
-    <?php echo $block->getAdditionalInfoHtml() ?>
+           
+<!-- Custom PPPlus additional info -->
+<?php $block->_initOrder(); ?>
 
-    <div class="actions-toolbar">
-        <div class="primary">
-            <a class="action primary continue" href="<?php /* @escapeNotVerified */ echo $block->getUrl() ?>"><span><?php /* @escapeNotVerified */ echo __('Continue Shopping') ?></span></a>
+<?php if($block->getIsMethodActive()) : ?>
+    <!-- Add Custom PayPal Message for pending payments -->
+    <?php if ($block->isPaymentPending() && !empty($block->getPendingMessage())) : ?>
+        <div id="warning" class="message notice">
+            <div><?php echo $block->escapeHtml($block->getPendingMessage()) ?></div>
         </div>
-    </div>
-</div>
+    <?php endif; ?>
+    <!-- Add PayPal Logo -->
+    <img src="<?php echo $block->escapeHtml($block->getPayPalLogo()) ?>" border="0" />
+<?php endif; ?>
+<!-- End of Custom PPPlus additional info --> 
+

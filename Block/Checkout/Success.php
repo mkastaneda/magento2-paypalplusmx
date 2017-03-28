@@ -84,7 +84,7 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      * 
      * @return \Magento\Sales\Model\Order
      */
-    protected function  _initOrder()
+    public function  _initOrder()
     {
         /** @var \Magento\Sales\Model\Order $order */
         $this->_order = $this->_orderFactory->create()->loadByIncrementId($this->getOrderId());
@@ -96,7 +96,6 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      */
     public function isPaymentPending()
     {
-        $this->_initOrder();
         if($this->_order->getStatus() == self::PENDING_PAYMENT_STATUS_CODE){
             return true;
         }
@@ -121,7 +120,6 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      */
     public function getPayPalLogo()
     {
-        $this->_initOrder();
         if(!$this->_order->getPayment()){
             return;
         }
