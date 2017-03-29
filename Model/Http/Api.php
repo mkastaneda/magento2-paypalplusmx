@@ -383,7 +383,7 @@ class Api
             $this->_paymentId = $this->paymentObject['id'];
             $this->_checkoutSession->setPaymentId($this->_paymentId);
         } else{
-            throw new \Exception(__('Verify your shipping address.'));
+            throw new \Exception(__('This payment method is currently unavailable.'));
         }       
     }
     /**
