@@ -17,7 +17,7 @@
                 <model>qbo\PayPalPlusMx\Model\Payment</model>
                 <payment_action>authorize_capture</payment_action>
                 <title>Tarjeta de crédito/débito</title>
-                <sandbox>1</sandbox>
+                <sandbox_flag>1</sandbox_flag>
                 <status_pending>1</status_pending>
                 <save_cards_token>1</save_cards_token>
                 <installments_active>0</installments_active>

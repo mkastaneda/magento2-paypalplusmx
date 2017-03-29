@@ -65,7 +65,7 @@ class Config
     
     const XML_PATH_CLIENT_ID           = 'payment/qbo_paypalplusmx/client_id';
     const XML_PATH_CLIENT_SECRET       = 'payment/qbo_paypalplusmx/client_secret';
-    const XML_PATH_SANDBOX_MODE        = 'payment/qbo_paypalplusmx/sandbox';
+    const XML_PATH_SANDBOX_MODE        = 'payment/qbo_paypalplusmx/sandbox_flag';
     
     private $headers = array();
     private $curlOptions;

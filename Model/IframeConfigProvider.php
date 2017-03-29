@@ -19,7 +19,7 @@ class IframeConfigProvider implements ConfigProviderInterface
     const XML_PATH_INSTALLMENTS_MONTHS = 'payment/qbo_paypalplusmx/installments_months';
     const XML_PATH_IFRAME_HEIGHT       = 'payment/qbo_paypalplusmx/iframe_height';
     const XML_PATH_IFRAME_LANGUAGE     = 'general/locale/code';
-    const XML_PATH_SANDBOX_MODE        = 'payment/qbo_paypalplusmx/sandbox';
+    const XML_PATH_SANDBOX_MODE        = 'payment/qbo_paypalplusmx/sandbox_flag';
     const IFRAME_CONFIG_CODE_NAME      = 'paypalPlusIframe';
     /** 
      * @var string[]
