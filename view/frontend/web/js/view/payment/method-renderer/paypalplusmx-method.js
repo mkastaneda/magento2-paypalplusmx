@@ -188,6 +188,9 @@ define(
                                         self.term = term;
                                     }
                                     $('#ppplus').hide();
+                                    
+                                    //end aproved card and payment method, run placePendingOrder
+                                    self.placePendingOrder();
                                 },
                                 /**
                                  * Handle iframe error (if payment fails for example)
@@ -217,7 +220,7 @@ define(
                             function (response) {
                                 var payment = JSON.parse(response.responseText);
                                 console.log(payment);
-                                //console.log("Payment Error:" + response);
+                                console.log("Payment Error:" + response);
                                  if(payment.reason){
                                         self.onPaymentError(payment.reason);
                                     }else{
@@ -253,7 +256,6 @@ define(
                  * @returns {undefined}
                  */
                 doContinue: function () {
-                    //
                     var self = this;
                     if (this.validateAddress() !== false) {
                         self.paypalObject.doContinue();
@@ -267,7 +269,7 @@ define(
                 /**
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
-                 * @see qbo\PayPalPlusMx\Model\Payment
+                 * @see qbo\PayPalPlusMgetDatax\Model\Payment
                  * 
                  * @returns {array}
                  */
