@@ -49,17 +49,8 @@
                 <button 
                     id="continueButton"
                     type="submit"
-                    data-bind="click: doContinue, attr: {title: $t('Continue')}, css: {disabled: !isPlaceOrderActionAllowed()}"
+                    data-bind="click: doContinue, attr: {title: $t('Continue')}"
                     class="action primary checkout">
-                    <span data-bind="i18n: 'Continue'"></span>
-                </button>
-            </div>
-            <div class="primary">
-                <button id="payNowButton" 
-                        type="submit"
-                        style="display:none;"
-                        data-bind=" click: placePendingOrder, attr: {title: $t('Continue')}, css: {visible: false}"
-                        class="action primary checkout">
                     <span data-bind="i18n: 'Place Order'"></span>
                 </button>
             </div>
