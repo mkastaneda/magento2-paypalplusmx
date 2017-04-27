@@ -1,4 +1,4 @@
-# magento2-paypalplusmx
+# Magento 2: qbo/module-paypalplusmx payment module (MX)
 Magento 2 PayPal Plus (México)
 
 # Installation
