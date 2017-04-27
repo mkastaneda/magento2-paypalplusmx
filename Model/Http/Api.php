@@ -45,7 +45,6 @@ class Api
     const XML_PATH_STORE_NAME    = 'general/store_information/name';
     const XML_PATH_DEBUG_MODE    = 'payment/qbo_paypalplusmx/debug';
     const XML_PATH_PROFILE_NAME  = 'payment/qbo_paypalplusmx/profile_name';
-    const XML_PATH_BN_CODE       = 'payment/qbo_paypalplusmx/bn_code';
     const XP_VALIDATION_ERROR    = 'VALIDATION_ERROR';
     const XP_URL_CODE            = 'xp';
     const PAYMENT                = 'payment';

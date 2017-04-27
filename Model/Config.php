@@ -29,6 +29,8 @@
 // @codingStandardsIgnoreFile
 
 namespace qbo\PayPalPlusMx\Model;
+use Magento\Framework\App\ProductMetadataInterface;
+
 
 /**
  * Config model that is aware of all \Magento\Paypal payment methods
@@ -39,14 +41,37 @@ namespace qbo\PayPalPlusMx\Model;
 class Config extends \Magento\Paypal\Model\Config
 {
     /**
-     *
      * @var string 
      */
     private static $bnCodeMx = 'PPP_SI_Custom_%s';
     /**
      * @var string 
      */
+    protected $_metaDataInterface;
+    /**
+     * @var string 
+     */
     const METHOD_PAYPALPLUS = 'qbo_paypalplusmx';
+    /**
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
+     * @param \Magento\Directory\Helper\Data $directoryHelper
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
+     * @param \Magento\Payment\Model\Source\CctypeFactory $cctypeFactory
+     * @param CertFactory $certFactory
+     * @param array $params
+     */
+    public function __construct(
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\Directory\Helper\Data $directoryHelper,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Payment\Model\Source\CctypeFactory $cctypeFactory,
+        \Magento\Paypal\Model\CertFactory $certFactory,
+        ProductMetadataInterface $metadataInterface,
+        $params = []
+    ) {
+        $this->_metaDataInterface = $metadataInterface;
+        parent::__construct($scopeConfig, $directoryHelper, $storeManager, $cctypeFactory, $certFactory, $params);
+    }
     /**
      * Return list of allowed methods for specified country iso code
      *
@@ -142,7 +167,6 @@ class Config extends \Magento\Paypal\Model\Config
      */
     public function getBuildNotationCode()
     {
-        return sprintf(self::$bnCodeMx, $this->getProductMetadata()->getEdition());
+        return sprintf(self::$bnCodeMx, $this->_metaDataInterface->getEdition());
     }
-
 }
