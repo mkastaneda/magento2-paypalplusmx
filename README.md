@@ -33,6 +33,7 @@ From the root folder of your project:
 composer update [--ignore-platform-reqs]
 php bin/magento setup:upgrade
 rm -rf var/generation var/view_preprocessed pub/static
+php bin/magento setup:static-content:deploy
 ```
 # Debugging
 
