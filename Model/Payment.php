@@ -132,7 +132,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     {
         parent::assignData($data);
         
-        $authData     = $data->getData('additional_data');
+        $authData     = $data->getData('additional_data') ? : $data->getData();
         $infoInstance = $this->getInfoInstance();
         $infoInstance->setAdditionalInformation('payer_id',
             isset($authData['payer_id'])     ? $authData['payer_id']: ''
