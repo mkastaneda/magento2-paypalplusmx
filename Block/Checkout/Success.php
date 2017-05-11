@@ -27,6 +27,8 @@
  */
 namespace qbo\PayPalPlusMx\Block\Checkout;
 
+use qbo\PayPalPlusMx\Model\Payment;
+
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
     const SCOPE_STORE = 'store';
@@ -77,7 +79,12 @@ class Success extends \Magento\Checkout\Block\Onepage\Success
      */
     public function getIsMethodActive()
     {
-        return $this->getConfigValue(self::XML_PATH_IS_METHOD_ACTIVE);
+        $code = $this->_order->getPayment()->getMethod();
+        
+        if($this->_order->getPayment() && $code == Payment::CODE) {
+            return $this->getConfigValue(self::XML_PATH_IS_METHOD_ACTIVE);
+        }
+        return false;
     }
     /**
      * Load current Order
