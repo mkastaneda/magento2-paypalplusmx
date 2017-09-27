@@ -29,7 +29,8 @@
 namespace qbo\PayPalPlusMx\Model\Http;
 
 use Magento\Framework\DataObject;
-use \Magento\Sales\Model\Order;
+use Magento\Sales\Model\Order;
+use Magento\Customer\Model\Session;
 use Magento\Quote\Api\ShippingMethodManagementInterface as ShippingMethodManager;
 /**
  * PaymentRequest Model sent to PayPal API
@@ -108,6 +109,11 @@ class Payment {
     protected $_cartFactory;
     /**
      *
+     * @var type 
+     */
+    protected $_customer;
+    /**
+     *
      * @var string
      */
     public static $_cancelUrl;
@@ -138,7 +144,9 @@ class Payment {
             ShippingMethodManager $shippingMethodManager,
             \Magento\Store\Model\StoreManagerInterface $storeManager,
             \Magento\Payment\Model\Cart\SalesModel\Factory $cartFactory,
-            \Psr\Log\LoggerInterface $logger
+            \Magento\Framework\DataObject $dataObject,
+            \Psr\Log\LoggerInterface $logger,
+            Session $customerSession
     ){
         $this->_data = $data;
         $this->_adressData = $address;
@@ -146,13 +154,23 @@ class Payment {
         $this->_quote = $cart->getQuote();
         $this->_cartFactory = $cartFactory;
         $this->_cartPayment = $this->_cartFactory->create($this->_quote);
-        $this->_customerAddress = $cart->getQuote()->getShippingAddress();
+        $this->_customer = $customerSession->getCustomer();
+        $this->_logger = $logger;
+        $this->_customerAddress = $dataObject;
+        
+        if ($this->_customer->getDefaultShippingAddress()) {
+            $this->_customerAddress = $this->_customer->getDefaultShippingAddress();
+        } elseif (!empty($cart->getQuote()->getShippingAddress())) {
+            $this->_customerAddress = $cart->getQuote()->getShippingAddress();
+        } else if (!empty($cart->getQuote()->getBillingAddress())) {
+            $this->_customerAddress = $cart->getQuote()->getBillingAddress();
+        }
+
         $this->_customerBillingAddress = $cart->getQuote()->getBillingAddress();
         $this->_addressHelper = $addressHelper;
         $this->localeResolver = $localeResolver;
         $this->shippingMethodManager = $shippingMethodManager;
         $this->_storeManager = $storeManager;
-        $this->_logger = $logger;
         
         self::$_cancelUrl = $this->_storeManager->getStore()->getUrl('checkout/cart');
         self::$_returnUrl = $this->_storeManager->getStore()->getUrl('checkout/cart');

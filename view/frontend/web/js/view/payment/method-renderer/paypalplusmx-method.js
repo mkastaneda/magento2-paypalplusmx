@@ -235,17 +235,26 @@ define(
                                     window.checkoutConfig.payment.paypalPlusIframe.api = payment;
                                     self.isPaymentReady = true;
                                 } else {
-                                    self.onPaymentError(null);
+                                    if (payment.reason) {
+                                        self.onPaymentError(payment.reason);
+                                    } else {
+                                        self.onPaymentError(null);
+                                    }
                                 }
                             }
                     );
                 },
                 onPaymentError: function (reason) {
-                    if(reason){
-                        $('#iframe-error').html('');
-                        $('#iframe-error').append('<div><span>' + reason + '</span></div>');
+                    var iframeErrorElem = '#iframe-error';
+                    if (reason) {
+                        if (reason === 'payment_not_ready') {
+                            iframeErrorElem = '#iframe-error-payment-not-ready';
+                        } else {
+                            $(iframeErrorElem).html('');
+                            $(iframeErrorElem).append('<div><span>' + reason + '</span></div>');
+                        }
                     }
-                    $('#iframe-error').show();
+                    $(iframeErrorElem).show();
                     $('#iframe-warning').hide();
                     $('#continueButton').prop("disabled", true);
                     fullScreenLoader.stopLoader();

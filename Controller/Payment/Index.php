@@ -36,10 +36,11 @@ use Magento\Payment\Helper\Data as PaymentHelper;
 class Index extends \Magento\Framework\App\Action\Action
 {
 
-    const IFRAME_CODE_NAME        = 'paypalPlusIframe';
-    const XML_PATH_EXPERIENCE_ID  = 'payment/qbo_paypalplusmx/profile_experience_id';
-    const SESSION_INSTANCE        = 'Magento\Customer\Model\Session';
-    const CUSTOMER_INSTANCE       = 'Magento\Customer\Model\Customer';
+    const IFRAME_CODE_NAME            = 'paypalPlusIframe';
+    const XML_PATH_EXPERIENCE_ID      = 'payment/qbo_paypalplusmx/profile_experience_id';
+    const SESSION_INSTANCE            = 'Magento\Customer\Model\Session';
+    const CUSTOMER_INSTANCE           = 'Magento\Customer\Model\Customer';
+    const PAYMENT_NO_READY_CODE       = 'payment_not_ready';
 
     /** 
      * @var string[]
@@ -133,11 +134,14 @@ class Index extends \Magento\Framework\App\Action\Action
                 
                 if(!$payment['success']){
                     return $resultJson->setHttpResponseCode(400)
-                                      ->setData(array('error' => true, 'reason' => $payment['reason'])); 
+                            ->setData(array(
+                                'error' => true, 
+                                'reason' => $payment['reason'])
+                            ); 
                 }
                 if(!$this->_api->getIframeUrl()){
-                        $config['isQuoteReady'] = false;
-                        $config['reason'] = $this->__('Iframe not ready');
+                    $config['isQuoteReady'] = false;
+                    $config['reason'] = self::PAYMENT_NO_READY_CODE;
                 } else{
                     $config['shippingData']  = $this->_quote->getShippingAddress()->toArray();                        
                     $config['billingData']   = $this->_quote->getBillingAddress()->toArray();                        
