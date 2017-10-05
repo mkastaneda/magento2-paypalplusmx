@@ -69,7 +69,7 @@ class Payment {
      *
      * @var type 
      */
-    protected $_customerAddress = null;
+    public $_customerAddress = null;
     /**
      *
      * @var type 

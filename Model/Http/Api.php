@@ -94,7 +94,7 @@ class Api
     /**
      * @var qbo\PayPalPlusMx\Model\Http\PaymentRequest
      */
-    protected $_paymentRequest;
+    public $_paymentRequest;
     /**
      * @var string 
      */
