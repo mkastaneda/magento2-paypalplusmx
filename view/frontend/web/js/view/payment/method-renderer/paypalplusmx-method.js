@@ -258,7 +258,9 @@ define(
                     }
                     $('#iframe-error').show();
                     $('#iframe-warning').hide();
-                    $('#continueButton').prop("disabled", true);
+                    if(!$(".iwd-checkout-payment-method").length){
+                    	$('#continueButton').prop("disabled", true);
+                	}
                     fullScreenLoader.stopLoader();
                 },
                 /**
