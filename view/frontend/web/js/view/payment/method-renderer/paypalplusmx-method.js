@@ -84,7 +84,9 @@ define(
                             if (!window.checkoutConfig.payment.paypalPlusIframe.api.isQuoteReady || window.checkoutConfig.payment.paypalPlusIframe.api.error) {
                                 $('#iframe-warning').hide();
                                 $('#iframe-error').show();
-                                $('#continueButton').prop("disabled", true);
+                                if(!$(".iwd-checkout-payment-method").length){
+                                	$('#continueButton').prop("disabled", true);
+                            	}
                                 return false;
                             }
                             self.initializeIframe();
@@ -112,7 +114,9 @@ define(
                         //This will happen if no shipping address is required and user adds a payment address before entering an email address
                         $('#iframe-warning').hide();
                         $('#iframe-error-email').show();
-                        $('#continueButton').prop("disabled", true);
+                        if(!$(".iwd-checkout-payment-method").length){
+                        	$('#continueButton').prop("disabled", true);
+                    	}
                         //Wait for the user to specify an email address.
                         $("#customer-email").on('focusout', function(){
                             self.initializeIframe();
