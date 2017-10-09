@@ -13,7 +13,7 @@
         <input type="radio"
                name="payment[method]"
                class="radio"
-               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaypalPlusPaymenth, visible: isRadioButtonVisible()"/>
        
         <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
     </div>
@@ -23,7 +23,7 @@
     <div id="iframe-error-email" data-bind="visible: false" class="message notice">
         <div><!-- ko i18n: "Please specify an e-mail address and try again" --><!-- /ko --></div>
     </div>
-    <div class="payment-method-content">
+    <div class="payment-method-content" >
         <!-- ko foreach: getRegion('messages') -->
         <!-- ko template: getTemplate() --><!-- /ko -->
         <!--/ko-->

@@ -40,7 +40,6 @@ define(
             'Magento_Checkout/js/model/error-processor',
             'Magento_Checkout/js/model/full-screen-loader',
             'Magento_Checkout/js/model/postcode-validator'
-
         ],
         function (Component, iframe, $, quote, storage, errorProcesor, fullScreenLoader, postcodeValidator) {
             'use strict';
@@ -62,16 +61,22 @@ define(
                 paymentApiServiceUrl: 'paypalplus/payment',
                 errorProcessor: errorProcesor,
                 customerData: quote.billingAddress._latestValue,
+                
+                //select method paypalplus
+                selectPaypalPlusPaymenth: function () {
+                    return this.selectPaymentMethod();
+                },
+                                	
                 /**
                  * Wait until "ppplus" div exists and API responds with payment data
                  * @returns {undefined}
                  */
                 initialize: function () {
-
                     fullScreenLoader.startLoader();
                     this.initPayment();
                     this._super();
                     var self = this;
+                    
                     var iframeLoaded = setInterval(function ()
                     {
                         if ($('#ppplus').length && self.isPaymentReady)
@@ -150,6 +155,9 @@ define(
                                  * @returns {undefined}
                                  */
                                 onLoad: function () {
+                                	if($(".iwd-checkout-payment-method").length){
+                                		$("#ppplus").css("width", "300px");
+                                	}
                                     console.log("Iframe successfully lo aded !");
                                 },
                                 /**
@@ -175,6 +183,7 @@ define(
                                     var message = {
                                         message: $.mage.__('Payment has been authorized.')
                                     };
+                                    
                                     self.messageContainer.addSuccessMessage(message);
 
                                     if (rememberedCardsToken &&
@@ -203,7 +212,7 @@ define(
                                         message: JSON.stringify(err.cause)
                                     };
                                     //Display response error
-                                    //that.messageContainer.addErrorMessage(message); 
+                                    that.messageContainer.addErrorMessage(message); 
                                 }
                             });
                 },
@@ -219,8 +228,6 @@ define(
                             ).fail(
                             function (response) {
                                 var payment = JSON.parse(response.responseText);
-                                console.log(payment);
-                                console.log("Payment Error:" + response);
                                  if(payment.reason){
                                         self.onPaymentError(payment.reason);
                                     }else{
@@ -257,8 +264,9 @@ define(
                  */
                 doContinue: function () {
                     var self = this;
+                    
                     if (this.validateAddress() !== false) {
-                        self.paypalObject.doContinue();
+                    		self.paypalObject.doContinue();
                     } else {
                         var message = {
                             message: $.mage.__('Please verify shipping address.')
@@ -297,6 +305,7 @@ define(
                  */
                 placePendingOrder: function () {
                     var self = this;
+                    
                     if (this.placeOrder()) {
                         // capture all click events
                         document.addEventListener('click', iframe.stopEventPropagation, true);
