@@ -69,7 +69,7 @@ class Payment {
      *
      * @var type 
      */
-    public $_customerAddress = null;
+    protected $_customerAddress = null;
     /**
      *
      * @var type 
@@ -156,17 +156,17 @@ class Payment {
         $this->_cartPayment = $this->_cartFactory->create($this->_quote);
         $this->_customer = $customerSession->getCustomer();
         $this->_logger = $logger;
-        $this->_customerAddress = $dataObject;
         
-        if ($this->_customer->getDefaultShippingAddress()) {
-            $this->_customerAddress = $this->_customer->getDefaultShippingAddress();
-        } elseif (!empty($cart->getQuote()->getShippingAddress())) {
-            $this->_customerAddress = $cart->getQuote()->getShippingAddress();
-        } else if (!empty($cart->getQuote()->getBillingAddress())) {
-            $this->_customerAddress = $cart->getQuote()->getBillingAddress();
+	$this->_customerBillingAddress = $this->_customer->getDefaultBillingAddress() ? : $cart->getQuote()->getBillingAddress();
+        $this->_customerAddress = $this->_customer->getDefaultShippingAddress() ? : $cart->getQuote()->getShippingAddress();
+	
+        if(empty($this->_customerBillingAddress)){
+            $this->_customerBillingAddress = $dataObject;
+        }
+        if(empty($this->_customerAddress)){
+            $this->_customerAddress = $dataObject;
         }
 
-        $this->_customerBillingAddress = $cart->getQuote()->getBillingAddress();
         $this->_addressHelper = $addressHelper;
         $this->localeResolver = $localeResolver;
         $this->shippingMethodManager = $shippingMethodManager;
@@ -176,6 +176,27 @@ class Payment {
         self::$_returnUrl = $this->_storeManager->getStore()->getUrl('checkout/cart');
         self::$_notifyUrl = $this->_storeManager->getStore()->getUrl('paypal/ipn');
         
+    }
+    /**
+    * Billing Address Getter
+    */
+    public function getBillingAddress()
+    {
+	if(empty($this->_customerBillingAddress)){
+            return false;
+        }
+        return $this->_customerBillingAddress->toArray();
+    }
+    /**
+    * Shipping Address Getter
+    */
+
+    public function getShippingAddress()
+    {
+        if(empty($this->_customerAddress)){
+            return false;
+        }
+        return $this->_customerAddress->toArray();
     }
     /**
      * Build and get cart variables to be sent to PayPal.

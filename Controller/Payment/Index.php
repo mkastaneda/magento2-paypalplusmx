@@ -143,8 +143,8 @@ class Index extends \Magento\Framework\App\Action\Action
                     $config['isQuoteReady'] = false;
                     $config['reason'] = self::PAYMENT_NO_READY_CODE;
                 } else{
-                    $config['shippingData']  = $this->_api->_paymentRequest->_customerAddress->toArray();                        
-                    $config['billingData']   = $this->_api->_paymentRequest->_customerAddress->toArray();                        
+                    $config['shippingData']  = $this->_api->getPaymentRequest()->getShippingAddress();                        
+                    $config['billingData']   = $this->_api->getPaymentRequest()->getBillingAddress();;                        
                     $config['isQuoteReady'] = true;
                     $config['actionUrl']    = $this->_api->getIframeUrl();
                     $config['executeUrl']   = $this->_api->getExecuteUrl();

@@ -94,7 +94,7 @@ class Api
     /**
      * @var qbo\PayPalPlusMx\Model\Http\PaymentRequest
      */
-    public $_paymentRequest;
+    protected $_paymentRequest;
     /**
      * @var string 
      */
@@ -213,6 +213,10 @@ class Api
             );
         }
         return array('success' => true);
+    }
+    public function getPaymentRequest()
+    {
+        return $this->_paymentRequest;
     }
     /**
      * Get Iframe URL from session or locally
