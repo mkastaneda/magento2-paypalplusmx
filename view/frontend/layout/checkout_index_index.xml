@@ -12,7 +12,6 @@
     <body>
         <referenceBlock name="checkout.root">
             <arguments>
-
 	             <argument name="jsLayout" xsi:type="array">
 	                    <item name="components" xsi:type="array">
 	                        <item name="checkout" xsi:type="array">
@@ -30,7 +29,7 @@
 	                                                                    <item name="component" xsi:type="string">qbo_PayPalPlusMx/js/view/payment/paypalplusmx-payments</item>
 	                                                                    <item name="methods" xsi:type="array">
 																			<item name="qbo_paypalplusmx" xsi:type="array">
-	                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+																				<item name="isBillingAddressRequired" xsi:type="boolean">true</item>
 	                                                                        </item>
 	                                                                    </item>
 	                                                                </item>
@@ -46,7 +45,6 @@
 	                        </item>
 	                    </item>
 	                </argument>
-
             </arguments>
         </referenceBlock>
     </body>
