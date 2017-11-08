@@ -86,6 +86,9 @@
                     <label>Payment from Specific Countries</label>
                     <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
                 </field>
+                <field id="business_account" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>business Account</label>
+                </field>
             </group>
         </section>
     </system>
