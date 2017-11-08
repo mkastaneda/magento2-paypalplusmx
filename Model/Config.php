@@ -155,9 +155,10 @@ class Config extends \Magento\Paypal\Model\Config
     {
         switch ($fieldName) {
             case 'sandbox_flag':
+            case 'business_name':
                 return "payment/" . self::METHOD_PAYPALPLUS . "/{$fieldName}";
             default:
-                return false;
+                return null;
         }
     }
     /**
