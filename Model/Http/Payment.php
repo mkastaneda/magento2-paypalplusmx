@@ -308,10 +308,13 @@ class Payment {
         $baseSubtotal =  $this->_cartPayment->getBaseSubtotal() + $this->_cartPayment->getBaseDiscountAmount();
         //$shippingMethod = $this->shippingMethodManager->get($this->_quote->getId());
         //$shippingAmmount = $shippingMethod->getAmount();
-         
+        if($this->_quote->getBaseGiftCardsAmount()){
+            $baseSubtotal -= $this->_quote->getBaseGiftCardsAmount();
+        }
+        
         return [
             'currency' => $this->_quote->getBaseCurrencyCode(),
-            'total' => $this->_formatPrice( $this->_quote->getGrandTotal()),
+            'total' => $this->_formatPrice($this->_quote->getGrandTotal()),
             'details' => array(
                 'shipping' => $this->_formatPrice($this->_cartPayment->getBaseShippingAmount()),
                 'subtotal' => $this->_formatPrice($baseSubtotal),
@@ -336,19 +339,54 @@ class Payment {
                 'currency' => $this->_quote->getBaseCurrencyCode()
             ];
         }
-        //If a cart discount is applied, incude it as a separate item (otherwise items amounts wil never match subtotal amount)
-        $discount = $this->_cartPayment->getBaseDiscountAmount();
+        // Calculate gift card amount 
+        $this->_getGiftCardAmount($data);
         
-        if($this->_cartPayment->getBaseDiscountAmount() && $this->_cartPayment->getBaseDiscountAmount() != 0) {
-             $data[] = [
-                'name' =>  __(self::DISCOUNT_ITEM_NAME),
+        //If a cart discount is applied, incude it as a separate item (otherwise items amounts wil never match subtotal amount)
+        $this->_getDiscountAmount($data);
+        
+        return $data;
+    }
+    
+    /**
+     * Get discount
+     * 
+     * @param array $data
+     */
+    protected function _getDiscountAmount(&$data)
+    {
+        $discount = $this->_cartPayment->getBaseDiscountAmount();
+
+        if ($this->_cartPayment->getBaseDiscountAmount() && $this->_cartPayment->getBaseDiscountAmount() != 0) {
+            $data[] = [
+                'name' => __(self::DISCOUNT_ITEM_NAME),
                 'quantity' => 1,
                 'price' => $this->_formatPrice($discount),
                 'currency' => $this->_quote->getBaseCurrencyCode()
             ];
         }
-        return $data;
     }
+
+    /**
+     * 
+     * @param array $data
+     */
+    protected function _getGiftCardAmount(&$data)
+    {
+        if ($this->_quote->getBaseGiftCardsAmount()) {
+            $giftCard = unserialize($this->_quote->getGiftCards());
+            if (isset($giftCard[0]['a'])) {
+                $data[] = [
+                    'name' => __('Gift Card'),
+                    'sku' => $giftCard[0]['c'],
+                    'quantity' => 1,
+                    'price' => -$this->_formatPrice($giftCard[0]['a']),
+                    'currency' => $this->_quote->getBaseCurrencyCode()
+                ];
+            }
+        }
+    }
+
     /**
      * Get shipping address request data
      *
