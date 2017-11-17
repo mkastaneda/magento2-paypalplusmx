@@ -311,6 +311,9 @@ class Payment {
         if($this->_quote->getBaseGiftCardsAmount()){
             $baseSubtotal -= $this->_quote->getBaseGiftCardsAmount();
         }
+        if($this->_quote->getBaseCustomerBalAmountUsed()){
+            $baseSubtotal -= $this->_quote->getBaseCustomerBalAmountUsed();
+        }
         
         return [
             'currency' => $this->_quote->getBaseCurrencyCode(),
@@ -341,13 +344,30 @@ class Payment {
         }
         // Calculate gift card amount 
         $this->_getGiftCardAmount($data);
-        
+        // Get Store Credit From Quote
+        $this->_getStoreCreditsAmount($data);
         //If a cart discount is applied, incude it as a separate item (otherwise items amounts wil never match subtotal amount)
         $this->_getDiscountAmount($data);
         
         return $data;
     }
     
+    /**
+     * Get Store Credit From Quote
+     * @param type $data
+     */
+    public function _getStoreCreditsAmount(&$data)
+    {
+        if ($this->_quote->getBaseCustomerBalAmountUsed()) {
+                $data[] = [
+                    'name' => __('Store Credit'),
+                    'quantity' => 1,
+                    'price' => -$this->_formatPrice($this->_quote->getBaseCustomerBalAmountUsed()),
+                    'currency' => $this->_quote->getBaseCurrencyCode()
+                ];
+        }
+    }
+
     /**
      * Get discount
      * 
