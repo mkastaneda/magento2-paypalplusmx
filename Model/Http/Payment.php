@@ -395,14 +395,16 @@ class Payment {
     {
         if ($this->_quote->getBaseGiftCardsAmount()) {
             $giftCard = unserialize($this->_quote->getGiftCards());
-            if (isset($giftCard[0]['a'])) {
-                $data[] = [
-                    'name' => __('Gift Card'),
-                    'sku' => $giftCard[0]['c'],
-                    'quantity' => 1,
-                    'price' => -$this->_formatPrice($giftCard[0]['a']),
-                    'currency' => $this->_quote->getBaseCurrencyCode()
-                ];
+            foreach($giftCard as $gC) {
+                if (isset($gC['a'])) {
+                    $data[] = [
+                        'name' => __('Gift Card'),
+                        'sku' => $gC['c'],
+                        'quantity' => 1,
+                        'price' => -$this->_formatPrice($gC['a']),
+                        'currency' => $this->_quote->getBaseCurrencyCode()
+                    ];
+                }
             }
         }
     }
