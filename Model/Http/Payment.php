@@ -311,6 +311,9 @@ class Payment {
         if($this->_quote->getBaseGiftCardsAmount()){
             $baseSubtotal -= $this->_quote->getBaseGiftCardsAmount();
         }
+        if($this->_quote->getBaseCustomerBalAmountUsed()){
+            $baseSubtotal -= $this->_quote->getBaseCustomerBalAmountUsed();
+        }
         
         return [
             'currency' => $this->_quote->getBaseCurrencyCode(),
@@ -341,13 +344,30 @@ class Payment {
         }
         // Calculate gift card amount 
         $this->_getGiftCardAmount($data);
-        
+        // Get Store Credit From Quote
+        $this->_getStoreCreditsAmount($data);
         //If a cart discount is applied, incude it as a separate item (otherwise items amounts wil never match subtotal amount)
         $this->_getDiscountAmount($data);
         
         return $data;
     }
     
+    /**
+     * Get Store Credit From Quote
+     * @param type $data
+     */
+    public function _getStoreCreditsAmount(&$data)
+    {
+        if ($this->_quote->getBaseCustomerBalAmountUsed()) {
+                $data[] = [
+                    'name' => __('Store Credit'),
+                    'quantity' => 1,
+                    'price' => -$this->_formatPrice($this->_quote->getBaseCustomerBalAmountUsed()),
+                    'currency' => $this->_quote->getBaseCurrencyCode()
+                ];
+        }
+    }
+
     /**
      * Get discount
      * 
@@ -375,14 +395,18 @@ class Payment {
     {
         if ($this->_quote->getBaseGiftCardsAmount()) {
             $giftCard = unserialize($this->_quote->getGiftCards());
-            if (isset($giftCard[0]['a'])) {
-                $data[] = [
-                    'name' => __('Gift Card'),
-                    'sku' => $giftCard[0]['c'],
-                    'quantity' => 1,
-                    'price' => -$this->_formatPrice($giftCard[0]['a']),
-                    'currency' => $this->_quote->getBaseCurrencyCode()
-                ];
+            if (is_array($giftCard)) {
+                foreach ($giftCard as $gC) {
+                    if (isset($gC['a'])) {
+                        $data[] = [
+                            'name' => __('Gift Card'),
+                            'sku' => $gC['c'],
+                            'quantity' => 1,
+                            'price' => -$this->_formatPrice($gC['a']),
+                            'currency' => $this->_quote->getBaseCurrencyCode()
+                        ];
+                    }
+                }
             }
         }
     }
