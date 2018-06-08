@@ -519,7 +519,7 @@ class Api
             $client->setRawData($data, self::ACCEPT_HEADERS);
         }
         $client->setConfig(array(
-            'timeout' => 10, 
+            'timeout' => 3000, 
             'keepalive'=> true
             )
         );
