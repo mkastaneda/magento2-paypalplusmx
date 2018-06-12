@@ -47,7 +47,7 @@ define(
 
             return Component.extend({
                 defaults: {
-                    template: 'qbo_PayPalPlusMx/payment/paypalplusmx-form',
+                    template: 'Qbo_PayPalPlusMx/payment/paypalplusmx-form',
                     paymentReady: true
                 },
                 accessToken: false,
@@ -283,7 +283,7 @@ define(
                 /**
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
-                 * @see qbo\PayPalPlusMgetDatax\Model\Payment
+                 * @see Qbo\PayPalPlusMgetDatax\Model\Payment
                  * 
                  * @returns {array}
                  */

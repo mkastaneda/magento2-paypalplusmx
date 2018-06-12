@@ -22,7 +22,7 @@ define(
             rendererList.push(
                     {
                         type: 'qbo_paypalplusmx',
-                        component: 'qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-method'
+                        component: 'Qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-method'
                     }
 
             );
