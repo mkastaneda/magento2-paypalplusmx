@@ -23,7 +23,7 @@ class ExperienceProfile extends \Magento\Framework\App\Config\Value  {
      * @param \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList
      * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource
      * @param \Magento\Framework\Data\Collection\AbstractDb $resourceCollection
-     * @param \qbo\PayPalPlusMx\Model\Http\Api $api
+     * @param \Qbo\PayPalPlusMx\Model\Http\Api $api
      * @param array $data
      */
     public function __construct(
@@ -33,7 +33,7 @@ class ExperienceProfile extends \Magento\Framework\App\Config\Value  {
         \Magento\Framework\App\Cache\TypeListInterface $cacheTypeList,
         \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
         \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
-        \qbo\PayPalPlusMx\Model\Http\Api $api,
+        \Qbo\PayPalPlusMx\Model\Http\Api $api,
         array $data = []
     ) {
         $this->_api = $api;
