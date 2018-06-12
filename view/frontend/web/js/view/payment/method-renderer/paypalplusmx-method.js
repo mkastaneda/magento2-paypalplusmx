@@ -190,7 +190,7 @@ define(
                                     }
 
                                     if (typeof term !== 'undefined') {
-                                        self.term = term;
+                                        self.terms = term;
                                     }
                                     $('#ppplus').hide();
                                     
@@ -296,8 +296,8 @@ define(
                             'payment_id': this.paymentId,
                             'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
-                            'terms': this.term.term ? this.term.term : false,
-                            'monthly_payment': this.term.monthly_payment.value ? this.term.monthly_payment.value : false
+                            'terms': this.terms.term ? this.terms.term : false,
+                            'monthly_payment': this.terms.monthly_payment.value ? this.terms.monthly_payment.value : false
                         }
                     };
 
