@@ -56,7 +56,12 @@ define(
                 paymentId: false,
                 token: false,
                 data: false,
-                terms: false,
+                terms: {
+                    term: false,
+                    monthly_payment: {
+                        value: false
+                    }
+                },
                 minimumInstallmentAmount: 500,
                 tokenizeServiceUrl: 'paypalplus/payment/cards',
                 paymentApiServiceUrl: 'paypalplus/payment',
@@ -291,7 +296,8 @@ define(
                             'payment_id': this.paymentId,
                             'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
-                            'terms': this.term ? this.term : false
+                            'terms': this.term.term ? this.term.term : false,
+                            'monthly_payment': this.term.monthly_payment.value ? this.term.monthly_payment.value : false
                         }
                     };
 

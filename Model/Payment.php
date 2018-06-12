@@ -149,6 +149,9 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $infoInstance->setAdditionalInformation('terms',
             isset($authData['terms']) ? $authData['terms'] : ''
         );
+        $infoInstance->setAdditionalInformation('monthly_payment',
+            isset($authData['monthly_payment']) ? $authData['monthly_payment'] : ''
+        );
         $infoInstance->setAdditionalInformation('handle_pending_payment', isset($authData['handle_pending_payment'])? $authData['handle_pending_payment'] : 0);
         
         return $this;
