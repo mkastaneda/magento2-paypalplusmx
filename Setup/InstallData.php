@@ -27,7 +27,7 @@
  */
 
 
-namespace qbo\PayPalPlusMx\Setup;
+namespace Qbo\PayPalPlusMx\Setup;
 
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Customer\Model\Customer;

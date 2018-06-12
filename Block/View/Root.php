@@ -25,7 +25,7 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Block\View;
+namespace Qbo\PayPalPlusMx\Block\View;
 use Magento\Framework\View;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 

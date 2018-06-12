@@ -25,7 +25,7 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Controller\Payment;
+namespace Qbo\PayPalPlusMx\Controller\Payment;
 
 use \Magento\Framework\Json\Helper\Data;
 

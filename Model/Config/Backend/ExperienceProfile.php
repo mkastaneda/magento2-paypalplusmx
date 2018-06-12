@@ -1,6 +1,6 @@
 <?php
 
-namespace qbo\PayPalPlusMx\Model\Config\Backend;
+namespace Qbo\PayPalPlusMx\Model\Config\Backend;
 
 /**
  * Generate ExperienceProfile Backend Model
@@ -10,7 +10,7 @@ namespace qbo\PayPalPlusMx\Model\Config\Backend;
 class ExperienceProfile extends \Magento\Framework\App\Config\Value  {
 
     /**
-     * @var \qbo\PayPalPlusMx\Model\Http\Api 
+     * @var Qbo\PayPalPlusMx\Model\Http\Api 
      */
     protected $_api;
 

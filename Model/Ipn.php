@@ -27,7 +27,7 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Model;
+namespace Qbo\PayPalPlusMx\Model;
 
 use Exception;
 use Magento\Sales\Model\Order\Email\Sender\CreditmemoSender;

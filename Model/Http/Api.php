@@ -26,7 +26,7 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
 use qbo\PayPalPlusMx\Model\Http\Config;
 use qbo\PayPalPlusMx\Model\Http\Payment;

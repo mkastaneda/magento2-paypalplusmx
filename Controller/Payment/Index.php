@@ -27,7 +27,7 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Controller\Payment;
+namespace Qbo\PayPalPlusMx\Controller\Payment;
 
 use qbo\PayPalPlusMx\Model\Http\Api;
 use Magento\Framework\UrlInterface;

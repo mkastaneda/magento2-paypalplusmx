@@ -23,11 +23,11 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Observer;
+namespace Qbo\PayPalPlusMx\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
-use qbo\PayPalPlusMx\Model\Http\Api;
+use Qbo\PayPalPlusMx\Model\Http\Api;
 
 /**
  * PayPalPlus module observer
