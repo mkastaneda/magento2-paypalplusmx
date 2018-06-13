@@ -33,30 +33,35 @@ use \Magento\Framework\Json\Helper\Data;
 class Cards extends \Magento\Framework\App\Action\Action
 {
     protected $_resultJsonFactory;
-    protected $_resultRawFactory;
     protected $_request;
     protected $_helper;
     protected $_objectManager;
-    protected $_encryptor;
+    protected $_customerRepository;
+    protected $_session;
     protected $_logger;
     
-    const CUSTOMER_INSTANCE_NAME =   'Magento\Customer\Model\Customer';
-    const SESSION_INSTANCE_NAME  =   'Magento\Customer\Model\Session';
     /**
-     * @param Context $context
+     * @param \Magento\Framework\App\Action\Context $context
+     * @param \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory
+     * @param \Magento\Framework\Json\Helper\Data $helper
+     * @param \Magento\Customer\Model\Session $session
+     * @param \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
             \Magento\Framework\App\Action\Context $context, 
             \Magento\Framework\Controller\Result\JsonFactory $resultJsonFactory,
-            \Magento\Framework\Controller\Result\RawFactory $resultRawFactory,
             \Magento\Framework\Json\Helper\Data $helper,
+            \Magento\Customer\Model\Session $session,
+            \Magento\Customer\Api\CustomerRepositoryInterface $customerRepository,
             \Psr\Log\LoggerInterface $logger
 
     ){
-        $this->_resultJsonFactory = $resultJsonFactory;        
-        $this->_resultRawFactory = $resultRawFactory;        
+        $this->_resultJsonFactory = $resultJsonFactory;
         $this->_helper = $helper;     
         $this->_objectManager = $context->getObjectManager();
+        $this->_customerRepository = $customerRepository;
+	    $this->_session = $session;
         $this->_logger = $logger;
         parent::__construct($context);
     }
@@ -67,37 +72,36 @@ class Cards extends \Magento\Framework\App\Action\Action
     public function execute()
     {
         $resultJson = $this->_resultJsonFactory->create();
-        $resultRaw = $this->_resultRawFactory->create();
         $httpBadRequestCode = '400';
         $httpErrorCode = '500';
         
         try {
             $requestData = $this->_helper->jsonDecode($this->getRequest()->getContent());
         } catch (\Exception $e) {
-            $resultRaw->setData($e->getMessage());
-            return $resultRaw->setHttpResponseCode($httpErrorCode);
+            $resultJson->setData(array('reason' => $e->getMessage()));
+            return $resultJson->setHttpResponseCode($httpErrorCode);
         }
         if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
-            return $resultRaw->setHttpResponseCode($httpBadRequestCode);
+            return $resultJson->setHttpResponseCode($httpBadRequestCode);
         }
         
-        $tokenId = $requestData['token_id'];
-        
+        $tokenId = isset($requestData['token_id']) ? $requestData['token_id'] : false; 
+
         if(!$tokenId || empty($tokenId)){
-            return $resultRaw->setHttpResponseCode($httpBadRequestCode);
+            return $resultJson->setHttpResponseCode($httpBadRequestCode);
         }
         try{
-            $customer = $this->_objectManager->create(self::CUSTOMER_INSTANCE_NAME);
-            $customerSession = $this->_objectManager->create(self::SESSION_INSTANCE_NAME);
-            if($customerSession->isLoggedIn()){
+            $customerSession = $this->_session; 
+            if($customerSession->isLoggedIn()) 
+            {
                 $customerId = $customerSession->getCustomerId();
-                $customer->load($customerId);
-                $customer->setCardTokenId($tokenId);
-                $customer->save();
+                $customer = $this->_customerRepository->getById($customerId);
+                $customer->setCustomAttribute('card_token_id', $tokenId);
+                $this->_customerRepository->save($customer);
             }
         } catch (Exception $e) {
-            $resultRaw->setData($e->getMessage());
-            return $resultRaw->setHttpResponseCode($httpErrorCode);
+            $resultJson->setData($e->getMessage());
+            return $resultJson->setHttpResponseCode($httpErrorCode);
         }
         
         $response = json_encode(['success' => true]);
