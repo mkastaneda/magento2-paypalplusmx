@@ -47,7 +47,7 @@ define(
 
             return Component.extend({
                 defaults: {
-                    template: 'qbo_PayPalPlusMx/payment/paypalplusmx-form',
+                    template: 'Qbo_PayPalPlusMx/payment/paypalplusmx-form',
                     paymentReady: true
                 },
                 accessToken: false,
@@ -56,7 +56,12 @@ define(
                 paymentId: false,
                 token: false,
                 data: false,
-                terms: false,
+                terms: {
+                    term: false,
+                    monthly_payment: {
+                        value: false
+                    }
+                },
                 minimumInstallmentAmount: 500,
                 tokenizeServiceUrl: 'paypalplus/payment/cards',
                 paymentApiServiceUrl: 'paypalplus/payment',
@@ -185,7 +190,7 @@ define(
                                     }
 
                                     if (typeof term !== 'undefined') {
-                                        self.term = term;
+                                        self.terms = term;
                                     }
                                     $('#ppplus').hide();
                                     
@@ -278,7 +283,7 @@ define(
                 /**
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
-                 * @see qbo\PayPalPlusMgetDatax\Model\Payment
+                 * @see Qbo\PayPalPlusMgetDatax\Model\Payment
                  * 
                  * @returns {array}
                  */
@@ -291,7 +296,8 @@ define(
                             'payment_id': this.paymentId,
                             'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
-                            'terms': this.term ? this.term : false
+                            'terms': this.terms.term ? this.terms.term : false,
+                            'monthly_payment': this.terms.monthly_payment.value ? this.terms.monthly_payment.value : false
                         }
                     };
 

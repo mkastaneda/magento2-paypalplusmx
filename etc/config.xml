@@ -14,7 +14,7 @@
         <payment>
             <qbo_paypalplusmx>
                 <active>0</active>
-                <model>qbo\PayPalPlusMx\Model\Payment</model>
+                <model>Qbo\PayPalPlusMx\Model\Payment</model>
                 <payment_action>authorize_capture</payment_action>
                 <title>Tarjeta de crédito/débito</title>
                 <sandbox_flag>1</sandbox_flag>

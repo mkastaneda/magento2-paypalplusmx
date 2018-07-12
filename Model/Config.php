@@ -28,7 +28,7 @@
 
 // @codingStandardsIgnoreFile
 
-namespace qbo\PayPalPlusMx\Model;
+namespace Qbo\PayPalPlusMx\Model;
 use Magento\Framework\App\ProductMetadataInterface;
 
 

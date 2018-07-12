@@ -26,7 +26,7 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
 use Magento\Framework\DataObject;
 use Magento\Sales\Model\Order;
