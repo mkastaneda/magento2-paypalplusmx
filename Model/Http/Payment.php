@@ -157,8 +157,8 @@ class Payment {
         $this->_customer = $customerSession->getCustomer();
         $this->_logger = $logger;
         
-	$this->_customerBillingAddress = $this->_customer->getDefaultBillingAddress() ? : $cart->getQuote()->getBillingAddress();
-        $this->_customerAddress = $this->_customer->getDefaultShippingAddress() ? : $cart->getQuote()->getShippingAddress();
+	$this->_customerBillingAddress = $cart->getQuote()->getBillingAddress();
+        $this->_customerAddress = $cart->getQuote()->getShippingAddress();
 	
         if(empty($this->_customerBillingAddress)){
             $this->_customerBillingAddress = $dataObject;
