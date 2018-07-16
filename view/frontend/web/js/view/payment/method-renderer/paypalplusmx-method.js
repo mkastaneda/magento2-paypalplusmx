@@ -67,6 +67,7 @@ define(
                 paymentApiServiceUrl: 'paypalplus/payment',
                 errorProcessor: errorProcesor,
                 customerData: quote.billingAddress._latestValue,
+                placeOrderServiceUrl: "payment-information",
                 /**
                  * Wait until "ppplus" div exists and API responds with payment data
                  * @returns {undefined}
@@ -101,20 +102,20 @@ define(
                     //Hide previous error messages
                     $('#iframe-warning').hide();
                     $('#iframe-error-email').hide();
-                    
+
                     //Build Iframe
                     var self = this;
                     var mode = window.checkoutConfig.payment.paypalPlusIframe.config.isSandbox === "1" ? 'sandbox' : 'live';
                     var installmentsActive = window.checkoutConfig.quoteData.base_grand_total > self.minimumInstallmentAmount && Boolean(parseInt(window.checkoutConfig.payment.paypalPlusIframe.config.installments)) ? true : false;
                     var email = quote.guestEmail ? quote.guestEmail : window.checkoutConfig.customerData.email;
-                    
-                    if(!email && !$("#customer-email").val()) {
+
+                    if (!email && !$("#customer-email").val()) {
                         //This will happen if no shipping address is required and user adds a payment address before entering an email address
                         $('#iframe-warning').hide();
                         $('#iframe-error-email').show();
                         $('#continueButton').prop("disabled", true);
                         //Wait for the user to specify an email address.
-                        $("#customer-email").on('focusout', function(){
+                        $("#customer-email").on('focusout', function () {
                             self.initializeIframe();
                         });
                         return false;
@@ -137,7 +138,7 @@ define(
                                 "language": window.checkoutConfig.payment.paypalPlusIframe.config.iframeLanguage,
                                 "country": "MX",
                                 "disallowRememberedCards": window.checkoutConfig.customerData.id && window.checkoutConfig.payment.paypalPlusIframe.config.save_cards_token ? false : true,
-                                "rememberedCards": window.checkoutConfig.payment.paypalPlusIframe.api.card_token  ? window.checkoutConfig.payment.paypalPlusIframe.api.card_token : "1",
+                                "rememberedCards": window.checkoutConfig.payment.paypalPlusIframe.api.card_token ? window.checkoutConfig.payment.paypalPlusIframe.api.card_token : "1",
                                 "useraction": "continue",
                                 "payerEmail": email ? email : $("#customer-email").val(),
                                 "payerPhone": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone ? window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone : window.checkoutConfig.payment.paypalPlusIframe.api.billingData.telephone,
@@ -155,7 +156,7 @@ define(
                                  * @returns {undefined}
                                  */
                                 onLoad: function () {
-                                    console.log("Iframe successfully lo aded !");
+                                    console.log("Iframe successfully loaded !");
                                 },
                                 /**
                                  * Continue after payment is verifies (continueButton)
@@ -192,8 +193,8 @@ define(
                                     if (typeof term !== 'undefined') {
                                         self.terms = term;
                                     }
-                                    $('#ppplus').hide();
-                                    
+                                    //$('#ppplus').hide();
+
                                     //end aproved card and payment method, run placePendingOrder
                                     self.placePendingOrder();
                                 },
@@ -226,11 +227,11 @@ define(
                                 var payment = JSON.parse(response.responseText);
                                 console.log(payment);
                                 console.log("Payment Error:" + response);
-                                 if(payment.reason){
-                                        self.onPaymentError(payment.reason);
-                                    }else{
-                                        self.onPaymentError(null);
-                                 }
+                                if (payment.reason) {
+                                    self.onPaymentError(payment.reason);
+                                } else {
+                                    self.onPaymentError(null);
+                                }
                             }
                     ).done(
                             function (result) {
@@ -294,7 +295,7 @@ define(
                             'access_token': this.accessToken,
                             'payer_id': this.payerId,
                             'payment_id': this.paymentId,
-                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
+                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
                             'terms': this.terms.term ? this.terms.term : false,
                             'monthly_payment': this.terms.monthly_payment.value ? this.terms.monthly_payment.value : false
@@ -312,10 +313,14 @@ define(
                  */
                 placePendingOrder: function () {
                     var self = this;
-                    if (this.placeOrder()) {
-                        // capture all click events
-                        document.addEventListener('click', iframe.stopEventPropagation, true);
-                    }
+                    $(document).ajaxError(function (event, request, settings) {
+                        var url = settings.url.split("/").pop();
+                        if (url === self.placeOrderServiceUrl) {
+                            $('#continueButton').show();
+                        }
+                    });
+                    
+                    this.placeOrder();
                 },
                 /**
                  * Save credit card token.
@@ -356,7 +361,7 @@ define(
                 validateAddress: function () {
 
                     this.customerData = quote.billingAddress._latestValue;
-                    
+
                     if (typeof this.customerData.city === 'undefined' || this.customerData.city.length === 0) {
                         return false;
                     }
@@ -369,7 +374,7 @@ define(
                         return false;
                     }
 
-                    if (typeof this.customerData.street === 'undefined' || this.customerData.street[0].length === 0 ) {
+                    if (typeof this.customerData.street === 'undefined' || this.customerData.street[0].length === 0) {
                         return false;
                     }
                     if (typeof this.customerData.region === 'undefined' || this.customerData.region.length === 0) {
@@ -382,4 +387,4 @@ define(
 );
 
 
-              
+
