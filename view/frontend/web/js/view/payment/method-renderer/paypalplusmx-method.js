@@ -62,6 +62,7 @@ define(
                 paymentApiServiceUrl: 'paypalplus/payment',
                 errorProcessor: errorProcesor,
                 customerData: quote.billingAddress._latestValue,
+                placeOrderServiceUrl: "payment-information",
                 /**
                  * Wait until "ppplus" div exists and API responds with payment data
                  * @returns {undefined}
@@ -150,7 +151,7 @@ define(
                                  * @returns {undefined}
                                  */
                                 onLoad: function () {
-                                    console.log("Iframe successfully lo aded !");
+                                    console.log("Iframe successfully loaded !");
                                 },
                                 /**
                                  * Continue after payment is verifies (continueButton)
@@ -187,7 +188,7 @@ define(
                                     if (typeof term !== 'undefined') {
                                         self.term = term;
                                     }
-                                    $('#ppplus').hide();
+                                    //$('#ppplus').hide();
                                     
                                     //end aproved card and payment method, run placePendingOrder
                                     self.placePendingOrder();
@@ -306,10 +307,14 @@ define(
                  */
                 placePendingOrder: function () {
                     var self = this;
-                    if (this.placeOrder()) {
-                        // capture all click events
-                        document.addEventListener('click', iframe.stopEventPropagation, true);
-                    }
+                    $(document).ajaxError(function (event, request, settings) {
+                        var url = settings.url.split("/").pop();
+                        if (url === self.placeOrderServiceUrl) {
+                            $('#continueButton').show();
+                        }
+                    });
+
+                    this.placeOrder();
                 },
                 /**
                  * Save credit card token.
