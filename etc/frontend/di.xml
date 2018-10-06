@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!--
 /**
-* qbo_PayPalPlusMx DI definitions
+* Qbo_PayPalPlusMx DI definitions
 *
 * @category    qbo
-* @package     qbo_PayPalPlusMx
+* @package     Qbo_PayPalPlusMx
 * @author      Ivan Weiler & Stjepan Udovičić
 * @copyright   qbo (http://www.qbo.tech)
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -30,7 +30,7 @@
         <arguments>
             <argument name="layoutReaderPool" xsi:type="object">pageConfigRenderPool</argument>
             <argument name="generatorPool" xsi:type="object">pageLayoutGeneratorPool</argument>
-            <argument name="template" xsi:type="string">qbo_PayPalPlusMx::root.phtml</argument>
+            <argument name="template" xsi:type="string">Qbo_PayPalPlusMx::root.phtml</argument>
         </arguments>
     </type>
     <preference for="Magento\Paypal\Model\Ipn" type="Qbo\PayPalPlusMx\Model\Ipn" />

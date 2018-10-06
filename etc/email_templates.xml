@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
-    <template id="payment_other_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (Mex)" file="pending_payment.html" type="html" module="qbo_PayPalPlusMx" area="adminhtml"/>
-    <template id="payment_us_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (US)" file="pending_payment.html" type="html" module="qbo_PayPalPlusMx" area="adminhtml"/>
-    <template id="payment_es_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (ES)" file="pending_payment.html" type="html" module="qbo_PayPalPlusMx" area="adminhtml"/>
+    <template id="payment_other_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (Mex)" file="pending_payment.html" type="html" module="Qbo_PayPalPlusMx" area="adminhtml"/>
+    <template id="payment_us_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (US)" file="pending_payment.html" type="html" module="Qbo_PayPalPlusMx" area="adminhtml"/>
+    <template id="payment_es_qbo_paypalplusmx_pending_payment_email_template" label="Paypal Plus Pending Payment Email template (ES)" file="pending_payment.html" type="html" module="Qbo_PayPalPlusMx" area="adminhtml"/>
 </config>
