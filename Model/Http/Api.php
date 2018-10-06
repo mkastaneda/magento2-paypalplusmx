@@ -19,22 +19,22 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
-use qbo\PayPalPlusMx\Model\Http\Config;
-use qbo\PayPalPlusMx\Model\Http\Payment;
+use Qbo\PayPalPlusMx\Model\Http\Config;
+use Qbo\PayPalPlusMx\Model\Http\Payment;
 use Magento\Framework\HTTP\ZendClientFactory;
 use Magento\Framework\HTTP\ZendClient;
 use Magento\Framework\DataObject;
-use qbo\PayPalPlusMx\Helper\Profile;
-use qbo\PayPalPlusMx\Model\Config as PayPalConfig;
+use Qbo\PayPalPlusMx\Helper\Profile;
+use Qbo\PayPalPlusMx\Model\Config as PayPalConfig;
 /**
  * PayPal Plus API Client
  * 
@@ -92,7 +92,7 @@ class Api
      */
     protected $_request;
     /**
-     * @var qbo\PayPalPlusMx\Model\Http\PaymentRequest
+     * @var Qbo\PayPalPlusMx\Model\Http\PaymentRequest
      */
     protected $_paymentRequest;
     /**
@@ -136,7 +136,7 @@ class Api
     protected $scopeConfig;
     /**
      *
-     * @var qbo\PayPalPlusMx\Helper\Profile 
+     * @var Qbo\PayPalPlusMx\Helper\Profile 
      */
     protected $_profileHelper;
     /**

@@ -18,7 +18,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -27,7 +27,7 @@
  */
 
 
-namespace qbo\PayPalPlusMx\Setup;
+namespace Qbo\PayPalPlusMx\Setup;
 
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Customer\Model\Customer;
@@ -83,7 +83,7 @@ class InstallData implements InstallDataInterface
             'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             'label' => 'PayPalPlusMx Card Token ID',
             'input' => 'text',
-            'backend' => 'qbo\PayPalPlusMx\Model\Customer\Token',
+            'backend' => 'Qbo\PayPalPlusMx\Model\Customer\Token',
             'required' => false,
             'visible' => false,
             'user_defined' => false,

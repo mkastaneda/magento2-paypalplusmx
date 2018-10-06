@@ -19,7 +19,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -27,9 +27,9 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Controller\Payment;
+namespace Qbo\PayPalPlusMx\Controller\Payment;
 
-use qbo\PayPalPlusMx\Model\Http\Api;
+use Qbo\PayPalPlusMx\Model\Http\Api;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;
 

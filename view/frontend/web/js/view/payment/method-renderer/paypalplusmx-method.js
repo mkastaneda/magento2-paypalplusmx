@@ -19,7 +19,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -278,7 +278,7 @@ define(
                 /**
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
-                 * @see qbo\PayPalPlusMgetDatax\Model\Payment
+                 * @see Qbo\PayPalPlusMgetDatax\Model\Payment
                  * 
                  * @returns {array}
                  */
