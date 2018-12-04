@@ -218,7 +218,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     protected function _processTransaction(&$payment)
     {
         if (!in_array($this->_response->getHttpStatus(), $this->_successCodes)) {
-            throw new \Exception(__('Gateway error. Reason: %s', $this->_response->getMessage()));
+            throw new \Exception(__('Gateway error. Reason: %1', $this->_response->getMessage()));
         }
         $state = $this->_response->getState();
         $saleState = $this->_response->getSaleState();
