@@ -18,7 +18,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -32,7 +32,7 @@
  * @author kasta
  */
 
-namespace qbo\PayPalPlusMx\Block\Payment;
+namespace Qbo\PayPalPlusMx\Block\Payment;
 
 class Info extends \Magento\Payment\Block\Info
 {
