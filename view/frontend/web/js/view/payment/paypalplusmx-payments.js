@@ -1,8 +1,8 @@
 /**
- * qbo_PayPalPlusMx Magento JS component
+ * Qbo_PayPalPlusMx Magento JS component
  *
  * @category    qbo
- * @package     qbo_PayPalPlusMx
+ * @package     Qbo_PayPalPlusMx
  * @author      Ivan Weiler & Stjepan Udovičić
  * @copyright   qbo (http://www.qbo.tech)
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -22,7 +22,7 @@ define(
             rendererList.push(
                     {
                         type: 'qbo_paypalplusmx',
-                        component: 'qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-method'
+                        component: 'Qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-method'
                     }
 
             );
