@@ -80,7 +80,7 @@ class InstallData implements InstallDataInterface
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
 
         try {
-            $this->attributeRepository->get(
+            $customerSetup->getEavConfig()->getAttribute(
                 Customer::ENTITY,
                 'card_token_id'
             );
