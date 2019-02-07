@@ -78,29 +78,29 @@ class InstallData implements InstallDataInterface
         /** @var $attributeSet AttributeSet */
         $attributeSet = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
-        
-        $customerSetup->addAttribute(Customer::ENTITY, 'card_token_id', [
-            'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            'label' => 'PayPalPlusMx Card Token ID',
-            'input' => 'text',
-            'backend' => 'Qbo\PayPalPlusMx\Model\Customer\Token',
-            'required' => false,
-            'visible' => false,
-            'user_defined' => false,
-            'sort_order' => 1000,
-            'visible_on_front' => false,
-            'position' => 1000,
-            'system' => 0,
-        ]);
-        
-        $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'card_token_id')
-        ->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
-        
-        $attribute->save();
-          
-      
+
+        if (!$setup->getAttributeId(Customer::ENTITY, 'card_token_id')) {
+            $customerSetup->addAttribute(Customer::ENTITY, 'card_token_id', [
+                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'label' => 'PayPalPlusMx Card Token ID',
+                'input' => 'text',
+                'backend' => 'Qbo\PayPalPlusMx\Model\Customer\Token',
+                'required' => false,
+                'visible' => false,
+                'user_defined' => false,
+                'sort_order' => 1000,
+                'visible_on_front' => false,
+                'position' => 1000,
+                'system' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'card_token_id')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId
+                ]);
+
+            $attribute->save();
+        }
     }
 }
