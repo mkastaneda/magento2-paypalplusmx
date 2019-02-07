@@ -79,7 +79,12 @@ class InstallData implements InstallDataInterface
         $attributeSet = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
 
-        if (!$setup->getAttributeId(Customer::ENTITY, 'card_token_id')) {
+        try {
+            $this->attributeRepository->get(
+                Customer::ENTITY,
+                'card_token_id'
+            );
+        } catch (NoSuchEntityException $e) {
             $customerSetup->addAttribute(Customer::ENTITY, 'card_token_id', [
                 'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
                 'label' => 'PayPalPlusMx Card Token ID',
