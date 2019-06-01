@@ -3,12 +3,12 @@
  * Payment CC Types Source Model
  *
  * @category    qbo
- * @package     qbo_PayPalPlusMx
+ * @package     Qbo_PayPalPlusMx
  * @author José Catsañeda <jose@qbo.tech>
  * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 
-namespace qbo\PayPalPlusMx\Model\Source;
+namespace Qbo\PayPalPlusMx\Model\Source;
 
 class Months implements \Magento\Framework\Option\ArrayInterface
 {

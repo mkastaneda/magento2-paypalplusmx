@@ -4,13 +4,13 @@
 * qbo_PayPalPlusMx module dependency
 *
 * @category    qbo
-* @package     qbo_PayPalPlusMx
+* @package     Qbo_PayPalPlusMx
 * @copyright   qbo (http://www.qbo.tech)
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
-    <module name="qbo_PayPalPlusMx" setup_version="1.2.0">
+    <module name="Qbo_PayPalPlusMx" setup_version="1.2.0">
         <sequence>
             <module name="Magento_Paypal" />
             <module name="Magento_Sales" />

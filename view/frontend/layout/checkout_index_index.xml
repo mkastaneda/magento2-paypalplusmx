@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <!--
 /**
-* qbo_PayPalPlusMx layout configuration
+* Qbo_PayPalPlusMx layout configuration
 *
 * @category    qbo
-* @package     qbo_PayPalPlusMx
+* @package     Qbo_PayPalPlusMx
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <head>
-       <!-- <css src="qbo_PayPalPlusMx::css/ppplus.css"/>-->
+       <!-- <css src="Qbo_PayPalPlusMx::css/ppplus.css"/>-->
     </head>
     <body>
         <referenceBlock name="checkout.root"> 
@@ -30,7 +30,7 @@
                                                             <!-- merge payment method renders here -->
                                                             <item name="children" xsi:type="array">
                                                                 <item name="qbo_paypalplusmx-payments" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">qbo_PayPalPlusMx/js/view/payment/paypalplusmx-payments</item>
+                                                                    <item name="component" xsi:type="string">Qbo_PayPalPlusMx/js/view/payment/paypalplusmx-payments</item>
                                                                     <item name="methods" xsi:type="array">
                                                                         <item name="qbo_paypalplusmx" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
@@ -44,7 +44,7 @@
                                                             <item name="displayArea" xsi:type="string">afterMethods</item>
                                                             <item name="children" xsi:type="array">
                                                                 <item name="iframe-renderer" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-iframe</item>
+                                                                    <item name="component" xsi:type="string">Qbo_PayPalPlusMx/js/view/payment/method-renderer/paypalplusmx-iframe</item>
                                                                 </item>
                                                             </item>
                                                         </item>-->

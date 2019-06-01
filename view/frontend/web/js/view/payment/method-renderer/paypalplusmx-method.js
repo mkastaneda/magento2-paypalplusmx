@@ -25,7 +25,7 @@
  * 
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
- * qbo_PayPalPlusMx Magento JS component
+ * Qbo_PayPalPlusMx Magento JS component
  *
  */
 /*browser:true*/
@@ -47,7 +47,7 @@ define(
 
             return Component.extend({
                 defaults: {
-                    template: 'qbo_PayPalPlusMx/payment/paypalplusmx-form',
+                    template: 'Qbo_PayPalPlusMx/payment/paypalplusmx-form',
                     paymentReady: true
                 },
                 accessToken: false,

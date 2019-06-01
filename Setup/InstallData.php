@@ -18,7 +18,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -27,7 +27,7 @@
  */
 
 
-namespace qbo\PayPalPlusMx\Setup;
+namespace Qbo\PayPalPlusMx\Setup;
 
 use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Customer\Model\Customer;
@@ -78,29 +78,34 @@ class InstallData implements InstallDataInterface
         /** @var $attributeSet AttributeSet */
         $attributeSet = $this->attributeSetFactory->create();
         $attributeGroupId = $attributeSet->getDefaultGroupId($attributeSetId);
-        
-        $customerSetup->addAttribute(Customer::ENTITY, 'card_token_id', [
-            'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
-            'label' => 'PayPalPlusMx Card Token ID',
-            'input' => 'text',
-            'backend' => 'qbo\PayPalPlusMx\Model\Customer\Token',
-            'required' => false,
-            'visible' => false,
-            'user_defined' => false,
-            'sort_order' => 1000,
-            'visible_on_front' => false,
-            'position' => 1000,
-            'system' => 0,
-        ]);
-        
-        $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'card_token_id')
-        ->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
-        
-        $attribute->save();
-          
-      
+
+        try {
+            $customerSetup->getEavConfig()->getAttribute(
+                Customer::ENTITY,
+                'card_token_id'
+            );
+        } catch (NoSuchEntityException $e) {
+            $customerSetup->addAttribute(Customer::ENTITY, 'card_token_id', [
+                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
+                'label' => 'PayPalPlusMx Card Token ID',
+                'input' => 'text',
+                'backend' => 'Qbo\PayPalPlusMx\Model\Customer\Token',
+                'required' => false,
+                'visible' => false,
+                'user_defined' => false,
+                'sort_order' => 1000,
+                'visible_on_front' => false,
+                'position' => 1000,
+                'system' => 0,
+            ]);
+
+            $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'card_token_id')
+                ->addData([
+                    'attribute_set_id' => $attributeSetId,
+                    'attribute_group_id' => $attributeGroupId
+                ]);
+
+            $attribute->save();
+        }
     }
 }

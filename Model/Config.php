@@ -18,7 +18,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -28,7 +28,7 @@
 
 // @codingStandardsIgnoreFile
 
-namespace qbo\PayPalPlusMx\Model;
+namespace Qbo\PayPalPlusMx\Model;
 use Magento\Framework\App\ProductMetadataInterface;
 
 
