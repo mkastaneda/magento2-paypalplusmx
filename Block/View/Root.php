@@ -18,14 +18,14 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Block\View;
+namespace Qbo\PayPalPlusMx\Block\View;
 use Magento\Framework\View;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 

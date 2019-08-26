@@ -18,13 +18,13 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * 
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
 
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
 use \Magento\Framework\App\Config\ScopeConfigInterface;
 /**

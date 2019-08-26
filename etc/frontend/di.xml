@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <!--
 /**
-* qbo_PayPalPlusMx DI definitions
+* Qbo_PayPalPlusMx DI definitions
 *
 * @category    qbo
-* @package     qbo_PayPalPlusMx
+* @package     Qbo_PayPalPlusMx
 * @author      Ivan Weiler & Stjepan Udovičić
 * @copyright   qbo (http://www.qbo.tech)
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <virtualType name="qbo\PayPalPlusMx\Model\ConfigProvider" type="Magento\Payment\Model\CcGenericConfigProvider">
+    <virtualType name="Qbo\PayPalPlusMx\Model\ConfigProvider" type="Magento\Payment\Model\CcGenericConfigProvider">
         <arguments>
             <argument name="methodCodes" xsi:type="array">
-                <item name="qbo_paypalplusmx" xsi:type="const">qbo\PayPalPlusMx\Model\Payment::CODE</item>
+                <item name="qbo_paypalplusmx" xsi:type="const">Qbo\PayPalPlusMx\Model\Payment::CODE</item>
             </argument>
         </arguments>
     </virtualType>
@@ -22,7 +22,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="qbo_paypalplusmx_config_provider" xsi:type="object">qbo\PayPalPlusMx\Model\IframeConfigProvider</item>
+                <item name="qbo_paypalplusmx_config_provider" xsi:type="object">Qbo\PayPalPlusMx\Model\IframeConfigProvider</item>
             </argument>
         </arguments>
     </type>
@@ -30,9 +30,9 @@
         <arguments>
             <argument name="layoutReaderPool" xsi:type="object">pageConfigRenderPool</argument>
             <argument name="generatorPool" xsi:type="object">pageLayoutGeneratorPool</argument>
-            <argument name="template" xsi:type="string">qbo_PayPalPlusMx::root.phtml</argument>
+            <argument name="template" xsi:type="string">Qbo_PayPalPlusMx::root.phtml</argument>
         </arguments>
     </type>
-    <preference for="Magento\Paypal\Model\Ipn" type="qbo\PayPalPlusMx\Model\Ipn" />
-    <preference for="Magento\Paypal\Model\Config" type="qbo\PayPalPlusMx\Model\Config" />
+    <preference for="Magento\Paypal\Model\Ipn" type="Qbo\PayPalPlusMx\Model\Ipn" />
+    <preference for="Magento\Paypal\Model\Config" type="Qbo\PayPalPlusMx\Model\Config" />
 </config>

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <!--
 /**
-* qbo_PayPalPlusMx admin configuration
+* Qbo_PayPalPlusMx admin configuration
 *
 * @category    qbo
-* @package     qbo_PayPalPlusMx
+* @package     Qbo_PayPalPlusMx
 * @copyright   qbo (http://www.qbo.tech)
 * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
 */
@@ -45,7 +45,7 @@
                 </field>
                 <field id="profile_experience_id" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Profile Experience ID</label>
-                    <backend_model>qbo\PayPalPlusMx\Model\Config\Backend\ExperienceProfile</backend_model>
+                    <backend_model>Qbo\PayPalPlusMx\Model\Config\Backend\ExperienceProfile</backend_model>
                     <comment>Leave empty to create a new Experience Profile</comment>
                 </field>
                 <field id="save_cards_token" translate="label comment" type="select" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0">
@@ -73,7 +73,7 @@
                 <field id="installments_months" translate="label comment" type="select" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Default Installment Months</label>
                     <comment>The selected value will be used to pre-select a month plan to the user at checkout</comment>
-                    <source_model>qbo\PayPalPlusMx\Model\Source\Months</source_model>
+                    <source_model>Qbo\PayPalPlusMx\Model\Source\Months</source_model>
                 </field>
                 <field id="sort_order" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Sort Order</label>

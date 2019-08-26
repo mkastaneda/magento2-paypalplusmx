@@ -18,7 +18,7 @@
  *
  * @author José Castañeda <jose@qbo.tech>
  * @category qbo
- * @package qbo\PayPalPlusMx\
+ * @package Qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * 
@@ -26,7 +26,7 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
 use Magento\Framework\DataObject;
 use Magento\Sales\Model\Order;
