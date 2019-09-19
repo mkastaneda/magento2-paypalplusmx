@@ -25,7 +25,7 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Block\Checkout;
+namespace Qbo\PayPalPlusMx\Block\Checkout;
 
 use Qbo\PayPalPlusMx\Model\Payment;
 
