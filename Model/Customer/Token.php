@@ -34,8 +34,10 @@ class Token extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      */
     public function beforeSave($object)
     {
-        $encryptedToken = $this->_encryptor->encrypt($object->getCardTokenId());
-        $object->setCardTokenId($encryptedToken);
+        if(!is_null($object->getCardTokenId())) {
+            $encryptedToken = $this->_encryptor->encrypt($object->getCardTokenId());
+            $object->setCardTokenId($encryptedToken);
+        }
     }
 
     /**
@@ -44,7 +46,9 @@ class Token extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      */
     public function afterLoad($object)
     {
-        $decryptedToken = $this->_encryptor->decrypt($object->getCardTokenId());
-        $object->setCardTokenId($decryptedToken);
+        if(!is_null($object->getCardTokenId())) {
+            $decryptedToken = $this->_encryptor->decrypt($object->getCardTokenId());
+            $object->setCardTokenId($decryptedToken);
+        }
     }
 }
