@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * /**
  * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
  * MDDDDDDDDDDDDDNNDDDDDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDMM
@@ -22,8 +22,8 @@
  * @package qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
- * © 2016 QBO DIGITAL SOLUTIONS. 
+ *
+ * © 2016 QBO DIGITAL SOLUTIONS.
  *
  * qbo_PayPalPlusMx Magento JS component
  *
@@ -103,6 +103,8 @@ define(
                     $('#iframe-warning').hide();
                     $('#iframe-error-email').hide();
 
+                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
+
                     //Build Iframe
                     var self = this;
                     var mode = window.checkoutConfig.payment.paypalPlusIframe.config.isSandbox === "1" ? 'sandbox' : 'live';
@@ -121,7 +123,7 @@ define(
                         return false;
                     }
                     /**
-                     * Object script included in <head> 
+                     * Object script included in <head>
                      * @see di.xml
                      */
                     this.paypalObject = PAYPAL.apps.PPP(
@@ -160,7 +162,7 @@ define(
                                 },
                                 /**
                                  * Continue after payment is verifies (continueButton)
-                                 * 
+                                 *
                                  * @param {string} rememberedCards
                                  * @param {string} payerId
                                  * @param {string} token
@@ -200,7 +202,7 @@ define(
                                 },
                                 /**
                                  * Handle iframe error (if payment fails for example)
-                                 * 
+                                 *
                                  * @param {type} err
                                  * @returns {undefined}
                                  */
@@ -209,13 +211,15 @@ define(
                                         message: JSON.stringify(err.cause)
                                     };
                                     //Display response error
-                                    //that.messageContainer.addErrorMessage(message); 
+                                    //that.messageContainer.addErrorMessage(message);
+
+                                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
                                 }
                             });
                 },
                 /**
                  * Call PayPal API to create payment
-                 * 
+                 *
                  * @returns {mage/storage}
                  */
                 initPayment: function () {
@@ -264,10 +268,12 @@ define(
                     $('#iframe-warning').hide();
                     $('#continueButton').prop("disabled", true);
                     fullScreenLoader.stopLoader();
+
+                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
                 },
                 /**
                  * Handle Continue button, verify shipping address is set
-                 * 
+                 *
                  * @returns {undefined}
                  */
                 doContinue: function () {
@@ -285,7 +291,7 @@ define(
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
                  * @see Qbo\PayPalPlusMgetDatax\Model\Payment
-                 * 
+                 *
                  * @returns {array}
                  */
                 getData: function () {
@@ -319,12 +325,19 @@ define(
                             $('#continueButton').show();
                         }
                     });
-                    
-                    this.placeOrder();
+
+                    if(!window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced){
+
+                        window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = true;
+
+                        this.placeOrder();
+                    } else {
+                        console.log("The order is already being processed");
+                    }
                 },
                 /**
                  * Save credit card token.
-                 * 
+                 *
                  * @param {type} token
                  * @returns {unresolved}
                  */
@@ -355,7 +368,7 @@ define(
                 },
                 /**
                  * Validate shipping address.
-                 * 
+                 *
                  * @returns {Boolean}
                  */
                 validateAddress: function () {
@@ -385,6 +398,3 @@ define(
             });
         }
 );
-
-
-
