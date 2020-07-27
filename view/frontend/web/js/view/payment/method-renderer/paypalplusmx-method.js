@@ -39,10 +39,11 @@ define(
             'mage/storage',
             'Magento_Checkout/js/model/error-processor',
             'Magento_Checkout/js/model/full-screen-loader',
-            'Magento_Checkout/js/model/postcode-validator'
+            'Magento_Checkout/js/model/postcode-validator',
+            'Magento_Checkout/js/model/payment/additional-validators'
 
         ],
-        function (Component, iframe, $, quote, storage, errorProcesor, fullScreenLoader, postcodeValidator) {
+        function (Component, iframe, $, quote, storage, errorProcesor, fullScreenLoader, postcodeValidator, additionalValidators) {
             'use strict';
 
             return Component.extend({
@@ -278,9 +279,10 @@ define(
                  */
                 doContinue: function () {
                     var self = this;
-                    if (this.validateAddress() !== false) {
-                        self.paypalObject.doContinue();
-                    } else {
+                    let correctAddres = this.validateAddress()
+                    if (correctAddres && additionalValidators.validate()) {
+                            self.paypalObject.doContinue();
+                    } else if (!correctAddres){
                         var message = {
                             message: $.mage.__('Please verify shipping address.')
                         };
