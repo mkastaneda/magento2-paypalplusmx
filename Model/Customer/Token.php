@@ -3,7 +3,7 @@
  * Copyright © 2016 qbo. All rights reserved.
  * See COPYING.txt for license details.
  */
-namespace qbo\PayPalPlusMx\Model\Customer;
+namespace Qbo\PayPalPlusMx\Model\Customer;
 
 use Magento\Framework\Exception\LocalizedException;
 
@@ -34,7 +34,7 @@ class Token extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      */
     public function beforeSave($object)
     {
-        $encryptedToken = $this->_encryptor->encrypt($object->getCardTokenId());
+        $encryptedToken = $this->_encryptor->encrypt((string)$object->getCardTokenId());
         $object->setCardTokenId($encryptedToken);
     }
 
@@ -44,7 +44,7 @@ class Token extends \Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend
      */
     public function afterLoad($object)
     {
-        $decryptedToken = $this->_encryptor->decrypt($object->getCardTokenId());
+        $decryptedToken = $this->_encryptor->decrypt((string)$object->getCardTokenId());
         $object->setCardTokenId($decryptedToken);
     }
 }

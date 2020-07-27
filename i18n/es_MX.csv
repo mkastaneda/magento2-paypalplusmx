@@ -13,6 +13,7 @@
 "If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>","If you have questions about your order, you can email us at <a href=""mailto:%store_email"">%store_email</a>"
 "or call us at <a href=""tel:%store_phone"">%store_phone</a>","or call us at <a href=""tel:%store_phone"">%store_phone</a>"
 "Payment has been authorized.","El pago ha sido autorizado."
+"Payement has been declined by Payment Gateway","El pago ha sido declinado por el banco emisor, por favor intenta con otra tarjeta"
 "Paymen has been rejected, please try again with a different card.","El pago ha sido rechazado, por favor intente con otra tarjeta"
 "Please verify shipping address.","Por favor verifica tu direccón de envío."
 "An error ocurred while saving card.","Se ha producido un error el guardar la tarjeta."

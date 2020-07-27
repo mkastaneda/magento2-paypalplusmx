@@ -32,7 +32,7 @@
  * @author kasta
  */
 
-namespace qbo\PayPalPlusMx\Block\Payment;
+namespace Qbo\PayPalPlusMx\Block\Payment;
 
 class Info extends \Magento\Payment\Block\Info
 {

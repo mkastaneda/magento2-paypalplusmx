@@ -1,5 +1,5 @@
 /**
- * 
+ *
  * /**
  * MMDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDMMM
  * MDDDDDDDDDDDDDNNDDDDDDDDDDDDDDDDD=.DDDDDDDDDDDDDDDDDDDDDDDMM
@@ -22,8 +22,8 @@
  * @package qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
- * © 2016 QBO DIGITAL SOLUTIONS. 
+ *
+ * © 2016 QBO DIGITAL SOLUTIONS.
  *
  * qbo_PayPalPlusMx Magento JS component
  *
@@ -47,7 +47,7 @@ define(
 
             return Component.extend({
                 defaults: {
-                    template: 'qbo_PayPalPlusMx/payment/paypalplusmx-form',
+                    template: 'Qbo_PayPalPlusMx/payment/paypalplusmx-form',
                     paymentReady: true
                 },
                 accessToken: false,
@@ -56,12 +56,18 @@ define(
                 paymentId: false,
                 token: false,
                 data: false,
-                terms: false,
+                terms: {
+                    term: false,
+                    monthly_payment: {
+                        value: false
+                    }
+                },
                 minimumInstallmentAmount: 500,
                 tokenizeServiceUrl: 'paypalplus/payment/cards',
                 paymentApiServiceUrl: 'paypalplus/payment',
                 errorProcessor: errorProcesor,
                 customerData: quote.billingAddress._latestValue,
+                placeOrderServiceUrl: "payment-information",
                 /**
                  * Wait until "ppplus" div exists and API responds with payment data
                  * @returns {undefined}
@@ -96,26 +102,28 @@ define(
                     //Hide previous error messages
                     $('#iframe-warning').hide();
                     $('#iframe-error-email').hide();
-                    
+
+                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
+
                     //Build Iframe
                     var self = this;
                     var mode = window.checkoutConfig.payment.paypalPlusIframe.config.isSandbox === "1" ? 'sandbox' : 'live';
                     var installmentsActive = window.checkoutConfig.quoteData.base_grand_total > self.minimumInstallmentAmount && Boolean(parseInt(window.checkoutConfig.payment.paypalPlusIframe.config.installments)) ? true : false;
                     var email = quote.guestEmail ? quote.guestEmail : window.checkoutConfig.customerData.email;
-                    
-                    if(!email && !$("#customer-email").val()) {
+
+                    if (!email && !$("#customer-email").val()) {
                         //This will happen if no shipping address is required and user adds a payment address before entering an email address
                         $('#iframe-warning').hide();
                         $('#iframe-error-email').show();
                         $('#continueButton').prop("disabled", true);
                         //Wait for the user to specify an email address.
-                        $("#customer-email").on('focusout', function(){
+                        $("#customer-email").on('focusout', function () {
                             self.initializeIframe();
                         });
                         return false;
                     }
                     /**
-                     * Object script included in <head> 
+                     * Object script included in <head>
                      * @see di.xml
                      */
                     this.paypalObject = PAYPAL.apps.PPP(
@@ -132,7 +140,7 @@ define(
                                 "language": window.checkoutConfig.payment.paypalPlusIframe.config.iframeLanguage,
                                 "country": "MX",
                                 "disallowRememberedCards": window.checkoutConfig.customerData.id && window.checkoutConfig.payment.paypalPlusIframe.config.save_cards_token ? false : true,
-                                "rememberedCards": window.checkoutConfig.payment.paypalPlusIframe.api.card_token  ? window.checkoutConfig.payment.paypalPlusIframe.api.card_token : "1",
+                                "rememberedCards": window.checkoutConfig.payment.paypalPlusIframe.api.card_token ? window.checkoutConfig.payment.paypalPlusIframe.api.card_token : "1",
                                 "useraction": "continue",
                                 "payerEmail": email ? email : $("#customer-email").val(),
                                 "payerPhone": window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone ? window.checkoutConfig.payment.paypalPlusIframe.api.shippingData.telephone : window.checkoutConfig.payment.paypalPlusIframe.api.billingData.telephone,
@@ -150,11 +158,11 @@ define(
                                  * @returns {undefined}
                                  */
                                 onLoad: function () {
-                                    console.log("Iframe successfully lo aded !");
+                                    console.log("Iframe successfully loaded !");
                                 },
                                 /**
                                  * Continue after payment is verifies (continueButton)
-                                 * 
+                                 *
                                  * @param {string} rememberedCards
                                  * @param {string} payerId
                                  * @param {string} token
@@ -185,16 +193,16 @@ define(
                                     }
 
                                     if (typeof term !== 'undefined') {
-                                        self.term = term;
+                                        self.terms = term;
                                     }
-                                    $('#ppplus').hide();
-                                    
+                                    //$('#ppplus').hide();
+
                                     //end aproved card and payment method, run placePendingOrder
                                     self.placePendingOrder();
                                 },
                                 /**
                                  * Handle iframe error (if payment fails for example)
-                                 * 
+                                 *
                                  * @param {type} err
                                  * @returns {undefined}
                                  */
@@ -203,13 +211,15 @@ define(
                                         message: JSON.stringify(err.cause)
                                     };
                                     //Display response error
-                                    //that.messageContainer.addErrorMessage(message); 
+                                    //that.messageContainer.addErrorMessage(message);
+
+                                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
                                 }
                             });
                 },
                 /**
                  * Call PayPal API to create payment
-                 * 
+                 *
                  * @returns {mage/storage}
                  */
                 initPayment: function () {
@@ -221,11 +231,11 @@ define(
                                 var payment = JSON.parse(response.responseText);
                                 console.log(payment);
                                 console.log("Payment Error:" + response);
-                                 if(payment.reason){
-                                        self.onPaymentError(payment.reason);
-                                    }else{
-                                        self.onPaymentError(null);
-                                 }
+                                if (payment.reason) {
+                                    self.onPaymentError(payment.reason);
+                                } else {
+                                    self.onPaymentError(null);
+                                }
                             }
                     ).done(
                             function (result) {
@@ -258,10 +268,12 @@ define(
                     $('#iframe-warning').hide();
                     $('#continueButton').prop("disabled", true);
                     fullScreenLoader.stopLoader();
+
+                    window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = false;
                 },
                 /**
                  * Handle Continue button, verify shipping address is set
-                 * 
+                 *
                  * @returns {undefined}
                  */
                 doContinue: function () {
@@ -278,8 +290,8 @@ define(
                 /**
                  * Gather and set payment after payment is authorized.
                  * This data is sent to the Capture methos via ajax.
-                 * @see qbo\PayPalPlusMgetDatax\Model\Payment
-                 * 
+                 * @see Qbo\PayPalPlusMgetDatax\Model\Payment
+                 *
                  * @returns {array}
                  */
                 getData: function () {
@@ -289,9 +301,10 @@ define(
                             'access_token': this.accessToken,
                             'payer_id': this.payerId,
                             'payment_id': this.paymentId,
-                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api  ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
+                            'execute_url': window.checkoutConfig.payment.paypalPlusIframe.api ? window.checkoutConfig.payment.paypalPlusIframe.api.executeUrl : "",
                             'handle_pending_payment': window.checkoutConfig.payment.paypalPlusIframe.config.status_pending,
-                            'terms': this.term ? this.term : false
+                            'terms': this.terms.term ? this.terms.term : false,
+                            'monthly_payment': this.terms.monthly_payment.value ? this.terms.monthly_payment.value : false
                         }
                     };
 
@@ -306,14 +319,25 @@ define(
                  */
                 placePendingOrder: function () {
                     var self = this;
-                    if (this.placeOrder()) {
-                        // capture all click events
-                        document.addEventListener('click', iframe.stopEventPropagation, true);
+                    $(document).ajaxError(function (event, request, settings) {
+                        var url = settings.url.split("/").pop();
+                        if (url === self.placeOrderServiceUrl) {
+                            $('#continueButton').show();
+                        }
+                    });
+
+                    if(!window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced){
+
+                        window.checkoutConfig.payment.paypalPlusIframe.isOrderPlaced = true;
+
+                        this.placeOrder();
+                    } else {
+                        console.log("The order is already being processed");
                     }
                 },
                 /**
                  * Save credit card token.
-                 * 
+                 *
                  * @param {type} token
                  * @returns {unresolved}
                  */
@@ -344,13 +368,13 @@ define(
                 },
                 /**
                  * Validate shipping address.
-                 * 
+                 *
                  * @returns {Boolean}
                  */
                 validateAddress: function () {
 
                     this.customerData = quote.billingAddress._latestValue;
-                    
+
                     if (typeof this.customerData.city === 'undefined' || this.customerData.city.length === 0) {
                         return false;
                     }
@@ -363,7 +387,7 @@ define(
                         return false;
                     }
 
-                    if (typeof this.customerData.street === 'undefined' || this.customerData.street[0].length === 0 ) {
+                    if (typeof this.customerData.street === 'undefined' || this.customerData.street[0].length === 0) {
                         return false;
                     }
                     if (typeof this.customerData.region === 'undefined' || this.customerData.region.length === 0) {
@@ -374,6 +398,3 @@ define(
             });
         }
 );
-
-
-              

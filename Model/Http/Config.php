@@ -24,7 +24,7 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Model\Http;
+namespace Qbo\PayPalPlusMx\Model\Http;
 
 use \Magento\Framework\App\Config\ScopeConfigInterface;
 /**
@@ -61,7 +61,7 @@ class Config
     const PATCH_REQUEST_URL            = 'https://api.paypal.com/v1/payments/payment/';
    
     const XP_REQUEST_SANDBOX_URL       = 'https://api.sandbox.paypal.com/v1/payment-experience/web-profiles';
-    const XP_REQUEST_URL               = 'https://api.paypal.com/v1/v1/payment-experience/web-profiles';
+    const XP_REQUEST_URL               = 'https://api.paypal.com/v1/payment-experience/web-profiles';
     
     const XML_PATH_CLIENT_ID           = 'payment/qbo_paypalplusmx/client_id';
     const XML_PATH_CLIENT_SECRET       = 'payment/qbo_paypalplusmx/client_secret';

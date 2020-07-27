@@ -27,15 +27,14 @@
  *
  */
 
-namespace qbo\PayPalPlusMx\Controller\Payment;
+namespace Qbo\PayPalPlusMx\Controller\Payment;
 
-use qbo\PayPalPlusMx\Model\Http\Api;
+use Qbo\PayPalPlusMx\Model\Http\Api;
 use Magento\Framework\UrlInterface;
 use Magento\Payment\Helper\Data as PaymentHelper;
 
 class Index extends \Magento\Framework\App\Action\Action
 {
-
     const IFRAME_CODE_NAME            = 'paypalPlusIframe';
     const XML_PATH_EXPERIENCE_ID      = 'payment/qbo_paypalplusmx/profile_experience_id';
     const SESSION_INSTANCE            = 'Magento\Customer\Model\Session';

@@ -33,14 +33,14 @@ use Magento\Customer\Setup\CustomerSetupFactory;
 use Magento\Customer\Model\Customer;
 use Magento\Eav\Model\Entity\Attribute\Set as AttributeSet;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
-use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
  
 /**
  * @codeCoverageIgnore
  */
-class InstallData implements InstallDataInterface
+class UpgradeData implements UpgradeDataInterface
 {
     /**
      * @var CustomerSetupFactory
@@ -66,9 +66,8 @@ class InstallData implements InstallDataInterface
     /**
      * {@inheritdoc}
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        
         /** @var CustomerSetup $customerSetup */
         $customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
         
@@ -83,7 +82,7 @@ class InstallData implements InstallDataInterface
             'type' => \Magento\Framework\DB\Ddl\Table::TYPE_TEXT,
             'label' => 'PayPalPlusMx Card Token ID',
             'input' => 'text',
-            'backend' => 'qbo\PayPalPlusMx\Model\Customer\Token',
+            'backend' => 'Qbo\PayPalPlusMx\Model\Customer\Token',
             'required' => false,
             'visible' => false,
             'user_defined' => false,
@@ -91,16 +90,6 @@ class InstallData implements InstallDataInterface
             'visible_on_front' => false,
             'position' => 1000,
             'system' => 0,
-        ]);
-        
-        $attribute = $customerSetup->getEavConfig()->getAttribute(Customer::ENTITY, 'card_token_id')
-        ->addData([
-            'attribute_set_id' => $attributeSetId,
-            'attribute_group_id' => $attributeGroupId
-        ]);
-        
-        $attribute->save();
-          
-      
+        ]);        
     }
 }

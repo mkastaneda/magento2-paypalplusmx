@@ -25,11 +25,11 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  */
 
-namespace qbo\PayPalPlusMx\Model;
+namespace Qbo\PayPalPlusMx\Model;
 
 use Magento\Framework\Exception\CouldNotSaveException;
-use qbo\PayPalPlusMx\Model\Http\Api;
-use qbo\PayPalPlusMx\Model\Http\Payment as PaymentObject;
+use Qbo\PayPalPlusMx\Model\Http\Api;
+use Qbo\PayPalPlusMx\Model\Http\Payment as PaymentObject;
 
 class Payment extends \Magento\Payment\Model\Method\AbstractMethod
 {
@@ -49,7 +49,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     const XML_PATH_STORE_NAME               = 'general/store_information/name';
     
     protected $_code = self::CODE;
-    protected $_infoBlockType               = 'qbo\PayPalPlusMx\Block\Payment\Info';
+    protected $_infoBlockType               = 'Qbo\PayPalPlusMx\Block\Payment\Info';
     protected $_api;
     protected $_paymentObject;
     protected $_response;
@@ -149,6 +149,9 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $infoInstance->setAdditionalInformation('terms',
             isset($authData['terms']) ? $authData['terms'] : ''
         );
+        $infoInstance->setAdditionalInformation('monthly_payment',
+            isset($authData['monthly_payment']) ? $authData['monthly_payment'] : ''
+        );
         $infoInstance->setAdditionalInformation('handle_pending_payment', isset($authData['handle_pending_payment'])? $authData['handle_pending_payment'] : 0);
         
         return $this;
@@ -173,7 +176,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $data = $this->_getPaymentData($payerId);
         /**
          *  Call PayPal API to Execute Payment
-         *  @var qbo\PayPalPlusMx\Model\Http\Api 
+         *  @var Qbo\PayPalPlusMx\Model\Http\Api 
          */
         $this->_response = $this->_api->_executePayment($data, $executeUrl, $accessToken);
         
@@ -215,7 +218,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     protected function _processTransaction(&$payment)
     {
         if (!in_array($this->_response->getHttpStatus(), $this->_successCodes)) {
-            throw new \Exception(__('Gateway error. Reason: %s', $this->_response->getMessage()));
+            throw new \Exception(__('Gateway error. Reason: %1', $this->_response->getMessage()));
         }
         $state = $this->_response->getState();
         $saleState = $this->_response->getSaleState();

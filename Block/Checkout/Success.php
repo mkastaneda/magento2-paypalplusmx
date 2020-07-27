@@ -25,9 +25,9 @@
  * © 2016 QBO DIGITAL SOLUTIONS. 
  *
  */
-namespace qbo\PayPalPlusMx\Block\Checkout;
+namespace Qbo\PayPalPlusMx\Block\Checkout;
 
-use qbo\PayPalPlusMx\Model\Payment;
+use Qbo\PayPalPlusMx\Model\Payment;
 
 class Success extends \Magento\Checkout\Block\Onepage\Success
 {
