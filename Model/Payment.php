@@ -21,8 +21,8 @@
  * @package qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
- * © 2016 QBO DIGITAL SOLUTIONS. 
+ *
+ * © 2016 QBO DIGITAL SOLUTIONS.
  */
 
 namespace Qbo\PayPalPlusMx\Model;
@@ -47,7 +47,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     const XML_PATH_EMAIL_SUPPORT_EMAIL      = 'trans_email/ident_sales/email';
     const XML_PATH_EMAIL_SUPPORT_PHONE      = 'general/store_information/phone';
     const XML_PATH_STORE_NAME               = 'general/store_information/name';
-    
+
     protected $_code = self::CODE;
     protected $_infoBlockType               = 'Qbo\PayPalPlusMx\Block\Payment\Info';
     protected $_api;
@@ -75,7 +75,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
 
     /**
      * Constructor method
-     * 
+     *
      * @param \Magento\Framework\Model\Context $context
      * @param \Magento\Framework\Registry $registry
      * @param \Magento\Framework\Api\ExtensionAttributesFactory $extensionFactory
@@ -128,10 +128,10 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
      * @return $this
      * @throws LocalizedException
      */
-    public function assignData(\Magento\Framework\DataObject $data) 
+    public function assignData(\Magento\Framework\DataObject $data)
     {
         parent::assignData($data);
-        
+
         $authData     = $data->getData('additional_data') ? : $data->getData();
         $infoInstance = $this->getInfoInstance();
         $infoInstance->setAdditionalInformation('payer_id',
@@ -153,7 +153,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
             isset($authData['monthly_payment']) ? $authData['monthly_payment'] : ''
         );
         $infoInstance->setAdditionalInformation('handle_pending_payment', isset($authData['handle_pending_payment'])? $authData['handle_pending_payment'] : 0);
-        
+
         return $this;
     }
     /*
@@ -176,13 +176,13 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $data = $this->_getPaymentData($payerId);
         /**
          *  Call PayPal API to Execute Payment
-         *  @var Qbo\PayPalPlusMx\Model\Http\Api 
+         *  @var Qbo\PayPalPlusMx\Model\Http\Api
          */
         $this->_response = $this->_api->_executePayment($data, $executeUrl, $accessToken);
-        
+
         try {
             $this->_processTransaction($payment);
-        } 
+        }
         catch (\Exception $e) {
             $this->debugData(['request' => $data, 'exception' => $e->getMessage()]);
             $this->_logger->error(__('Payment capturing error.'));
@@ -194,7 +194,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get payment data array to be sent over api
-     * 
+     *
      * @return type
      */
     protected function _getPaymentData($payerId)
@@ -226,36 +226,36 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         if ($state == self::FAILED_STATE_CODE){
             throw new \Exception(__(self::GATEWAY_ERROR_MESSAGE));
         }
-        
+
         if (in_array($saleState, $this->_badSaleCodes)) {
             switch($saleState){
-                case  self::PAYMENT_REVIEW_STATE: 
+                case  self::PAYMENT_REVIEW_STATE:
                     if(!$this->_canHandlePendingStatus) {
                         throw new \Exception(__(self::DECLINE_ERROR_MESSAGE));
                     }
                     $this->setComments($this->_order, __(self::PENDING_PAYMENT_NOTIFICATION), false);
                     $payment->setTransactionId($this->_response->getSaleId())
-                            ->setIsTransactionPending(true)
-                            ->setIsTransactionClosed(false);
-                    
+                        ->setIsTransactionPending(true)
+                        ->setIsTransactionClosed(false);
+
                     $this->_sendPendingPaymentEmail();
                     break;
                 case self::DENIED_SALE_CODE :
-                    throw new \Exception(__(self::DENIED_ERROR_MESSAGE));    
-                default: 
-                    $payment->setIsTransactionPending(true); 
+                    throw new \Exception(__(self::DENIED_ERROR_MESSAGE));
+                default:
+                    $payment->setIsTransactionPending(true);
                     break;
-                }
-                
+            }
+
         }else if($saleState == self::COMPLETED_SALE_CODE){
             $payment->setTransactionId($this->_response->getSaleId())
-                    ->setIsTransactionClosed(true);
+                ->setIsTransactionClosed(true);
         }
         return $payment;
     }
     /**
      * Set order comments
-     * 
+     *
      * @param type $order
      * @param type $comment
      * @param type $isCustomerNotified
@@ -265,7 +265,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     {
         $history = $order->addStatusHistoryComment($comment, false);
         $history->setIsCustomerNotified($isCustomerNotified);
-        
+
         return $order;
     }
     /**
@@ -276,13 +276,13 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         try {
             $templateId = $this->getTemplateId(self::XML_PATH_EMAIL_PENDING_PAYMENT);
             $templateParams = $this->getTemplateParams();
-            $storeId = $this->getStore()->getStoreId(); 
-            
+            $storeId = $this->getStore()->getStoreId();
+
             $senderInfo = array(
                 'name' => $this->getStoreName(),
                 'email' => $this->getStoreEmail(),
             );
-            
+
             /** @var \Magento\Framework\Mail\Template\TransportBuilder */
             $transport = $this->_emailTransport
                 ->setTemplateIdentifier($templateId)
@@ -292,9 +292,9 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
                 ->addTo($this->_order->getCustomerEmail())
                 ->setReplyTo($this->getStoreEmail())
                 ->getTransport();
-            
+
             $transport->sendMessage();
-            
+
         } catch (\Exception $e) {
             $this->_logger->log(100, "Unable to send pending payment email: " . $e->getMessage());
         } catch(\Magento\Framework\Exception\MailException $ex){
@@ -320,7 +320,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get payment store config
-     * 
+     *
      * @return string
      */
     public function getTemplateParams()
@@ -333,7 +333,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get payment store config
-     * 
+     *
      * @return string
      */
     public function getConfigValue($configPath)
@@ -341,11 +341,11 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $value =  $this->_scopeConfig->getValue(
             $configPath,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        ); 
+        );
         return $value;
     }
     /**
-     * Return store 
+     * Return store
      *
      * @return Store
      */
@@ -355,7 +355,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get Store email contact
-     * 
+     *
      * @return type
      */
     public function getStoreEmail()
@@ -364,7 +364,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get Store email contact
-     * 
+     *
      * @return type
      */
     public function getStoreName()
@@ -373,7 +373,7 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
     }
     /**
      * Get Store Email
-     * 
+     *
      * @return type
      */
     public function getStorePhone()
@@ -402,7 +402,12 @@ class Payment extends \Magento\Payment\Model\Method\AbstractMethod
         $transactionId = $payment->getParentTransactionId();
 
         try {
-           // qbo\PayPalPlusMx\Model\Charge::retrieve($transactionId)->refund();
+            // qbo\PayPalPlusMx\Model\Charge::retrieve($transactionId)->refund();
+            $result = $this->_api->executeRefund($payment,$amount);
+            if ($result->getData('http_status') != 201) {
+                $this->_logger->error('[PPP-PAYMENT] Code status : '.$result->getData('http_status'). ' - Response: '.json_encode($result->getData()));
+                throw new \Magento\Framework\Exception\LocalizedException(__(self::GATEWAY_ERROR_MESSAGE));
+            }
         } catch (\Exception $e) {
             $this->debugData(['transaction_id' => $transactionId, 'exception' => $e->getMessage()]);
             $this->_logger->error(__('Payment refunding error.'));

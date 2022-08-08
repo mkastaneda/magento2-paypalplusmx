@@ -22,12 +22,13 @@
  * @package qbo\PayPalPlusMx\
  * @copyright   qbo (http://www.qbo.tech)
  * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * 
- * © 2016 QBO DIGITAL SOLUTIONS. 
+ *
+ * © 2016 QBO DIGITAL SOLUTIONS.
  *
  */
 namespace Qbo\PayPalPlusMx\Model\Http;
 
+use PayPal\Core\PayPalConstants;
 use Qbo\PayPalPlusMx\Model\Http\Config;
 use Qbo\PayPalPlusMx\Model\Http\Payment;
 use Magento\Framework\HTTP\ZendClientFactory;
@@ -37,10 +38,10 @@ use Qbo\PayPalPlusMx\Helper\Profile;
 use Qbo\PayPalPlusMx\Model\Config as PayPalConfig;
 /**
  * PayPal Plus API Client
- * 
+ *
  * @author José Catsañeda <jose@qbo.tech>
  */
-class Api 
+class Api
 {
     const XML_PATH_STORE_NAME    = 'general/store_information/name';
     const XML_PATH_DEBUG_MODE    = 'payment/qbo_paypalplusmx/debug';
@@ -65,6 +66,7 @@ class Api
     const CREATED_PAYMENT        = 'created';
     const DUPLICATED_PAYMENT     = "We're sorry, your payment has been already processed.";
     const PAYMENT_ALREADY_DONE   = 'PAYMENT_ALREADY_DONE';
+    const REFUND_URL_REQUEST     = 'v2/payments/captures/{capture_id}/refund';
 
 
     /**
@@ -76,15 +78,15 @@ class Api
      */
     private $httpConfig;
     /**
-     * @var type 
+     * @var type
      */
     public $_accessToken = false;
     /**
-     * @var type 
+     * @var type
      */
     private $paymentObject = array();
     /**
-     * @var Magento\Checkout\Model\Cart 
+     * @var Magento\Checkout\Model\Cart
      */
     protected $_cart;
     /**
@@ -96,20 +98,20 @@ class Api
      */
     protected $_paymentRequest;
     /**
-     * @var string 
+     * @var string
      */
     protected $_iframeUrl = false;
     /**
-     * @var string 
+     * @var string
      */
     protected $_executeUrl = false;
     /**
-     * @var string 
+     * @var string
      */
     protected $_paymentId = false;
     /**
      *
-     * @var type 
+     * @var type
      */
     protected $_profileId = false;
     /**
@@ -126,29 +128,29 @@ class Api
     protected $logger;
     /**
      *
-     * @var \Magento\Checkout\Model\Session 
+     * @var \Magento\Checkout\Model\Session
      */
     protected $_checkoutSession;
     /**
      *
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface 
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
      */
     protected $scopeConfig;
     /**
      *
-     * @var Qbo\PayPalPlusMx\Helper\Profile 
+     * @var Qbo\PayPalPlusMx\Helper\Profile
      */
     protected $_profileHelper;
     /**
      *
-     * @var int 
+     * @var int
      */
     protected $_debugMode = false;
     protected $_config = false;
 
     /**
      * Default Constructor
-     * 
+     *
      * @param Config $httpConfig
      * @param Payment $paymentRequest
      * @param ZendClientFactory $httpClientFactory
@@ -159,17 +161,17 @@ class Api
      * @param Profile $profileHelper
      */
     public function __construct(
-            Config $httpConfig,
-            Payment $paymentRequest,
-            ZendClientFactory $httpClientFactory,
-            \Psr\Log\LoggerInterface $logger,
-            DataObject $request,
-            \Magento\Checkout\Model\Session $checkoutSession,
-            \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-            Profile $profileHelper,
-            PayPalConfig $config
+        Config $httpConfig,
+        Payment $paymentRequest,
+        ZendClientFactory $httpClientFactory,
+        \Psr\Log\LoggerInterface $logger,
+        DataObject $request,
+        \Magento\Checkout\Model\Session $checkoutSession,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        Profile $profileHelper,
+        PayPalConfig $config
     ){
- 
+
         $this->httpConfig = $httpConfig;
         $this->httpConfig->setHeaders(
             array(
@@ -208,7 +210,7 @@ class Api
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             return array(
-                'success' => false, 
+                'success' => false,
                 'reason' => $e->getMessage()
             );
         }
@@ -220,13 +222,13 @@ class Api
     }
     /**
      * Get Iframe URL from session or locally
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    public function getIframeUrl() 
+    public function getIframeUrl()
     {
         $iframeUrl = $this->_checkoutSession->getIframeUrl();
-        
+
         if($iframeUrl) {
             return $iframeUrl;
         }
@@ -234,13 +236,13 @@ class Api
     }
     /**
      * Retrieve Access token to make payment requests
-     * 
+     *
      * @return string
      */
-    public function getAccessToken() 
+    public function getAccessToken()
     {
         $accessToken = $this->_checkoutSession->getAccessToken();
-        
+
         if($accessToken) {
             return $accessToken;
         }
@@ -248,13 +250,13 @@ class Api
     }
     /**
      * Retrieve Payment ID
-     * 
+     *
      * @return string
      */
-    public function getPaymentId() 
+    public function getPaymentId()
     {
         $paymentId = $this->_checkoutSession->getPaymentId();
-        
+
         if($paymentId) {
             return $paymentId;
         }
@@ -262,13 +264,13 @@ class Api
     }
     /**
      * Return execute URL to capture payment
-     * 
+     *
      * @return string
      */
-    public function getExecuteUrl() 
+    public function getExecuteUrl()
     {
         $executeUrl = $this->_checkoutSession->getExecuteUrl();
-        
+
         if($executeUrl) {
             return $executeUrl;
         }
@@ -276,7 +278,7 @@ class Api
     }
     /**
      * Get Experience Profile ID
-     * 
+     *
      * @return string
      */
     public function getProfileId()
@@ -285,7 +287,7 @@ class Api
     }
     /**
      * Set Experience Profile ID
-     * 
+     *
      * @param type $profileId
      */
     public function setProfileId($profileId)
@@ -295,21 +297,21 @@ class Api
     /**
      * Generate and save profile experiecne ID
      * This is triggered when the config filed is empty on admin panel
-     * 
+     *
      *  @return array
      */
     public function getProfileExperienceId()
-    {        
+    {
         $this->_requestAccessToken();
-        
+
         $merchantName = $this->getStoreConfig(self::XML_PATH_STORE_NAME);
         $profileName  = $this->_profileHelper->generateRandomProfileName();
         $profileData  = $this->_profileHelper->buildProfileRequest($profileName, $merchantName);
-        
+
         $url = $this->httpConfig->getUrl(self::XP_URL_CODE);
-        
+
         $result = $this->postRequest($url, json_encode($profileData));
-        
+
         if(isset($result['name']) && $result['name'] == self::XP_VALIDATION_ERROR){
             return array(
                 'success' => false,
@@ -323,18 +325,18 @@ class Api
     }
     /**
      * Request a new Access Token
-     * 
+     *
      */
     public function _requestAccessToken()
     {
-        $url = $this->httpConfig->getUrl(self::TOKEN);  
-        
+        $url = $this->httpConfig->getUrl(self::TOKEN);
+
         $response = $this->postRequest(
-           $url, 
-           $this->httpConfig->getBody(), 
-           $this->httpConfig->getCredentialsConfig()
+            $url,
+            $this->httpConfig->getBody(),
+            $this->httpConfig->getCredentialsConfig()
         );
-       
+
         $this->_accessToken = $response[self::ACCESS_TOKEN];
         $this->_checkoutSession->setAccessToken($this->_accessToken);
         $this->_checkoutSession->setAccessTokenExpires(
@@ -343,7 +345,7 @@ class Api
     }
     /**
      * Check if token expired
-     * 
+     *
      * @return bool
      */
     public function isTokenExpired()
@@ -352,7 +354,7 @@ class Api
     }
     /**
      * Check if Payment is expired
-     *  
+     *
      * @return bool
      */
     public function isPaymentExpired()
@@ -362,14 +364,14 @@ class Api
     /**
      * Create a New Payment
      */
-    public function _createPayment() 
+    public function _createPayment()
     {
         $url  = $this->httpConfig->getUrl(self::PAYMENT);
         $data = $this->_paymentRequest->getPaymentObject($this->getProfileId());
         //$this->_debug($data);
-        
+
         $this->paymentObject = $this->postRequest($url, json_encode($data));
-        
+
         if(isset($this->paymentObject[self::LINKS]))
         {
             foreach($this->paymentObject[self::LINKS] as $data)
@@ -387,7 +389,7 @@ class Api
             $this->_checkoutSession->setPaymentId($this->_paymentId);
         } else{
             //throw new \Exception(__('This payment method is currently unavailable.'));
-        }       
+        }
     }
     /**
      * Look Up an existing payment
@@ -396,21 +398,21 @@ class Api
     {
         $url = $this->httpConfig->getUrl(self::LOOKUP, $this->getPaymentId());
         $this->paymentObject = $this->postRequest(
-            $url, 
-            false, 
-            false, 
-            false, 
+            $url,
+            false,
+            false,
+            false,
             \Zend_Http_Client::GET
-        ); 
+        );
         $this->_checkoutSession->setPaymentIdExpires($this->paymentObject[self::VALID_UNTIL]);
     }
     /**
      * Update a payment if quote changed
-     * 
+     *
      * PATCH is executed via curl because there seems
      * to be a bug with the Zend CLient with PATCH requests.
      * (Getting "Unable to get response, or response is empty")
-     * 
+     *
      * @return bool
      */
     public function _patchPayment()
@@ -419,34 +421,34 @@ class Api
         $data = $this->_paymentRequest->getPatchPaymentObject();
         $this->_debug($data);
         $encodedData = str_replace('\\/', '/', json_encode($data));
-        
+
         $this->paymentObject =  $this->_patchRequest(
-            $encodedData, 
+            $encodedData,
             $url
-        ); 
-        
+        );
+
         if($this->paymentObject->getState() == self::CREATED_PAYMENT){
             return true;
         }else if($this->paymentObject->getState() == self::APPROVED_PAYMENT ||
-                 $this->paymentObject->getState() == self::PAYMENT_ALREADY_DONE){
+            $this->paymentObject->getState() == self::PAYMENT_ALREADY_DONE){
             /**
-             * If Payment is "approved" already, it means that payment has been captured, 
+             * If Payment is "approved" already, it means that payment has been captured,
              * but something went wrong while saving the order.
-             * 
+             *
              * TODO: notify store owner about incident
              */
             throw new \Exception(__(self::DUPLICATED_PAYMENT));
         }
         return false;
     }
-   /**
-    * Execute payment (capture payment)
-    * 
-    * @param type $data
-    * @param type $executeUrl
-    * @param type $accessToken
-    * @return type
-    */
+    /**
+     * Execute payment (capture payment)
+     *
+     * @param type $data
+     * @param type $executeUrl
+     * @param type $accessToken
+     * @return type
+     */
     public function _executePayment($data, $executeUrl, $accessToken = false)
     {
         if($accessToken){
@@ -463,13 +465,13 @@ class Api
     {
         if($this->getAccessToken()){
             $this->httpConfig->setHeaders(
-                    array(
-                        'Authorization' => "Bearer {$this->getAccessToken()}",
-                        'Content-Type' => self::ACCEPT_HEADERS,
-                        //Add Build Notation Code header to identify transactions from PPPlus
-                        'PayPal-Partner-Attribution-Id' => $this->_config->getBuildNotationCode() //Do not alter or change this !
-                    )
-                );
+                array(
+                    'Authorization' => "Bearer {$this->getAccessToken()}",
+                    'Content-Type' => self::ACCEPT_HEADERS,
+                    //Add Build Notation Code header to identify transactions from PPPlus
+                    'PayPal-Partner-Attribution-Id' => $this->_config->getBuildNotationCode() //Do not alter or change this !
+                )
+            );
         }
         return $this->httpConfig->getHeaders();
     }
@@ -489,7 +491,7 @@ class Api
      * b) Create Payment
      * c) Execute Payment
      * d) Patch Payment
-     * 
+     *
      * @param type $url
      * @param type $data
      * @param type $credentials
@@ -497,13 +499,13 @@ class Api
      * @throws \Exception
      */
     public function postRequest(
-            $url, 
-            $data = false,
-            $credentials = false,
-            $accessToken = false, 
-            $httpVerb = \Zend_Http_Client::POST
+        $url,
+        $data = false,
+        $credentials = false,
+        $accessToken = false,
+        $httpVerb = \Zend_Http_Client::POST
     )
-    {        
+    {
         if($accessToken){
             $this->_accessToken = $accessToken;
         }
@@ -519,19 +521,19 @@ class Api
             $client->setRawData($data, self::ACCEPT_HEADERS);
         }
         $client->setConfig(array(
-            'timeout' => 3000, 
-            'keepalive'=> true
+                'timeout' => 3000,
+                'keepalive'=> true
             )
         );
         $client->setUri($url);
         $client->setMethod($httpVerb);
         $client->setHeaders($this->getHttpHeaders());
         $client->setUrlEncodeBody(false);
-        
+
         /** @var Magento\Framework\DataObject */
         $result = new DataObject();
         $this->_sendPost($client, $result);
-        
+
         //Retry request in case of server errors.
         $retries = 0;
         if (in_array($result->getStatus(), self::$retryCodes) && $this->httpConfig->getHttpRetryCount() != null) {
@@ -540,12 +542,12 @@ class Api
                 $result = $this->_sendPost($client, $result);
             } while (in_array($result->getStatus(), self::$retryCodes) && (++$retries < $this->httpConfig->getHttpRetryCount()));
         }
-        
+
         return $result;
     }
     /**
      * Get response
-     * 
+     *
      * @param type $client
      * @param type $result
      */
@@ -555,7 +557,7 @@ class Api
             $this->_debug($client);
             $response = $client->request();
             $responseBody = json_decode($response->getBody(), true);
-            
+
             $result->setData($responseBody);
             $result->setHttpStatus($response->getStatus());
             $result->setMessage($response->getMessage());
@@ -570,10 +572,10 @@ class Api
             }
         } catch (\Exception $ex) {
             $result->setHttpStatus(500)
-                   ->setStatus(500) 
-                   ->setResponseCode(-1) 
-                   ->setResponseReasonCode($ex->getCode())
-                   ->setMessage($ex->getMessage());
+                ->setStatus(500)
+                ->setResponseCode(-1)
+                ->setResponseReasonCode($ex->getCode())
+                ->setMessage($ex->getMessage());
             $debugData['result'] = $result->getData();
             $this->_debug($debugData);
         }
@@ -630,14 +632,14 @@ class Api
     }
     /**
      * Init curl for PATCH requests
-     * 
+     *
      * @return string
      */
     protected function _execCurl($url, $data)
     {
         $responseBody = array();
         $httpStatus = false;
-        try{   
+        try{
             $ch = curl_init($url);
             $headers = $this->_getRawHeaders();
 
@@ -668,7 +670,7 @@ class Api
     }
     /**
      * Debug - log data
-     * 
+     *
      * @param string $data
      */
     protected function _debug($data)
@@ -679,15 +681,65 @@ class Api
     }
     /**
      * Get payment store config
-     * 
+     *
      * @return string
      */
     public function getStoreConfig($configPath)
     {
         $value =  $this->scopeConfig->getValue(
-                $configPath,
-                \Magento\Store\Model\ScopeInterface::SCOPE_STORE
-        ); 
+            $configPath,
+            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+        );
         return $value;
     }
+
+    /**
+     * Method for processing refunds.
+     *
+     * @param $payment
+     * @param $amount
+     * @return DataObject|type
+     * @throws \Exception
+     */
+    public function executeRefund($payment, $amount){
+        $transactionId = $payment->getParentTransactionId();
+        $accessToken = $payment->getAdditionalInformation('access_token');
+        if($accessToken){
+            $this->_accessToken = $accessToken;
+        }
+        $urlRequestReplaced = str_replace('{capture_id}',$transactionId,self::REFUND_URL_REQUEST);
+
+        $urlRequest = PayPalConstants::REST_SANDBOX_ENDPOINT.$urlRequestReplaced;
+        if (!$this->httpConfig->getSandBoxFlag()){
+            $urlRequest = PayPalConstants::REST_LIVE_ENDPOINT.$urlRequestReplaced;
+        }
+        $bodyReqest = $this->getRefundData($amount,$payment);
+        return $this->postRequest($urlRequest, json_encode($bodyReqest));
+    }
+
+    /**
+     * Method to create refund body request.
+     *
+     * @param $amount
+     * @param $payment
+     * @return array
+     */
+    private function getRefundData($amount, $payment){
+
+        $creditmemo = $payment->getCreditmemo();
+        $creditMemoIndex = (int)$payment->getAdditionalInformation('credit_memo_count') + 1;
+        $payment->setAdditionalInformation('credit_memo_count', $creditMemoIndex);
+
+        return array(
+            'amount' => array(
+                'value' => $amount,
+                'currency_code' => $creditmemo->getBaseCurrencyCode()
+            ),
+            'invoice_id'=> $creditmemo->getInvoiceId() . '-' . $creditMemoIndex,
+            'final_capture' => true,
+            'note_to_payer' =>$creditmemo->getCustomerNote() ? $creditmemo->getCustomerNote():'N/A',
+            'soft_descriptor' =>'refund'
+        );
+    }
+
 }
